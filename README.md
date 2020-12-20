@@ -1,35 +1,249 @@
 # WatchDOG
-
 ## API Design
-* POST powercubicle/v1/manage/passwd
-（内/外）更新密钥
-
-输入：密钥
-
-返回：success/failed
-
-* POST powercubicle/v1/seat
-（内）生成座位对应二维码
-
-输入：座位号
-
-返回：二维码图片
-
-* POST powercubicle/v1/seat/set
-（外）扫描二维码占座
-
-输入：二维码图片
-
-返回：success/failed
-
-* POST powercubicle/v1/userinfo
-（外）用于注册
-
-输入：用户名，密码，手机号
-
-返回：success/failed
-
-* GET powercubicle/v1/userinfo
-（外）
-
-返回：座位号/None
+### backend_inner
+__1.generate QRcode__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/qrcode
+```
+request body(JSON):
+{
+    "seat_number":string,
+    "time":{year-month-day} string
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "status": "success",
+    "data": {
+        "qr_code":{encrypted_string}    
+    },
+}
+``` 
+### backend_outer
+__1.check all seats status__
+    method: get
+    URL: {host}:{port}/powercubicle/v1/seat
+```
+response:
+status code: 200
+response body(JSON):
+{
+    "status": "success",
+    "data": {
+        "region": "all"
+        "seats":{
+            [
+                "A1" : "availble",
+                "B2": "unavailble",
+                ...
+            ]  
+        }
+    }
+}
+```
+__2.check single region seats status__
+    method: get
+    URL: {host}:{port}/powercubicle/v1/seat?region={region_code}
+```
+response:
+status code: 200
+response body(JSON):
+{
+    "status": "success",
+    "data": {
+        "region":{region_code}
+        "seats":{
+            [
+                "A1" : "availble",
+                "B2": "unavailble",
+                ...
+            ]  
+        }
+    }
+}
+```
+__3.user register__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/user/register
+```
+request body(JSON):
+{
+    "user_email":string,
+    "user_password":string
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "status": "success",
+}
+``` 
+__3.user login__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/user/login
+```
+request body(JSON):
+{
+    "user_email":string,
+    "user_password":string
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "status": "success",
+}
+``` 
+__4.seat register__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/seat/register
+```
+request body(JSON):
+{
+    "encrypted_qrcode":string,
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "status": "success",
+}
+``` 
+### database middleware
+__1.check all seats status__
+    method: get
+    URL: {host}:{port}/powercubicle/v1/db/seat
+```
+response:
+status code: 200
+response body(JSON):
+{
+    "status": "success",
+    "data": {
+        "region": "all"
+        "seats":{
+            [
+                "A1" : "availble",
+                "B2": "unavailble",
+                ...
+            ]  
+        }
+    }
+}
+```
+__2.check single region seats status__
+    method: get
+    URL: {host}:{port}/powercubicle/v1/db/seat?region={region_code}
+```
+response:
+status code: 200
+response body(JSON):
+{
+    "status": "success",
+    "data": {
+        "region":{region_code}
+        "seats":{
+            [
+                "A1" : "availble",
+                "B2": "unavailble",
+                ...
+            ]  
+        }
+    }
+}
+```
+__3.user register__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/db/user/register
+```
+request body(JSON):
+{
+    "user_email":string,
+    "user_password":string
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "status": "success",
+}
+``` 
+__3.get user password__ 
+    method: get
+    URL: {host}:{port}/powercubicle/v1/db/user?user_email={user_email}
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "status": "success",
+}
+``` 
+__4.seat register__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/seat/register
+```
+request body(JSON):
+{
+    "seat_number":string,
+    "time":{year-month-day} string
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "status": "success",
+}
+``` 
+### Managemnt Account
+__1.update key__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/management/key
+```
+request body(JSON):
+{
+    "key":string,
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "status": "success",
+}
+``` 
+### error_handling
+```
+status code: 400
+response body{JSON}:
+{
+    "status": "Bad request",
+    "message": "{error_message}"
+}
+status code: 404
+response body{JSON}:
+{
+    "status": "Request not found",
+    "message": "{error_message}"
+}
+status code: 500
+response body{JSON}:
+{
+    "status": "Internal server error",
+    "message": "{error_message}"
+}
+```
