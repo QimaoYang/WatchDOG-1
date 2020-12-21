@@ -22,6 +22,27 @@ response body{JSON}:
     },
 }
 ``` 
+__2.encrypt code__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/encrpt
+```
+request body(JSON):
+{
+    "seat_number":string,
+    "time":{year-month-day hh:mm:ss} string
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "status": "success",
+    "data": {
+        "encryp_text":[]byte    
+    },
+}
+``` 
 ### backend_outer
 __1.check all seats status__
     method: get
@@ -116,6 +137,27 @@ status code: 200
 response body{JSON}:
 {
     "status": "success",
+}
+``` 
+__5.decrypt code__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/decrpt
+```
+request body(JSON):
+{
+    "encryp_text":[]byte
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "status": "success",
+    "data": {
+        "seat_number":{string},
+        "time":{year-month-day hh:mm:ss}
+    },
 }
 ``` 
 ### database middleware
