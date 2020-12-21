@@ -3,12 +3,11 @@
 ### backend_inner
 __1.generate QRcode__ 
     method: post
-    URL: {host}:{port}/powercubicle/v1/qrcode
+    URL: {host}:{port}/powercubicle/v1/seat/qrcode
 ```
 request body(JSON):
 {
-    "seat_number":string,
-    "time":{year-month-day} string
+    "seat_number":string
 }
 ```
 ```
@@ -58,7 +57,7 @@ response body(JSON):
         "seats":{
             [
                 "A1" : "availble",
-                "B2": "unavailble",
+                "B2": "Zhang3",
                 ...
             ]  
         }
@@ -79,7 +78,7 @@ response body(JSON):
         "seats":{
             [
                 "A1" : "availble",
-                "B2": "unavailble",
+                "B2": "Zhang3",
                 ...
             ]  
         }
@@ -92,6 +91,7 @@ __3.user register__
 ```
 request body(JSON):
 {
+    "user_name":string,
     "user_email":string,
     "user_password":string
 }
@@ -122,13 +122,32 @@ response body{JSON}:
     "status": "success",
 }
 ``` 
-__4.seat register__ 
+__4.user login status check__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/user/login/status
+    describe: check whether the login session key is outdated
+```
+request body(JSON):
+{
+    "session_key":string
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "status": "success",
+}
+``` 
+__5.seat register__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/seat/register
 ```
 request body(JSON):
 {
     "encrypted_qrcode":string,
+    "time_for_use":enum[0.5, 1]
 }
 ```
 ```
@@ -175,7 +194,7 @@ response body(JSON):
         "seats":{
             [
                 "A1" : "availble",
-                "B2": "unavailble",
+                "B2": "Zhang3",
                 ...
             ]  
         }
@@ -196,7 +215,7 @@ response body(JSON):
         "seats":{
             [
                 "A1" : "availble",
-                "B2": "unavailble",
+                "B2": "Zhang3",
                 ...
             ]  
         }
@@ -209,6 +228,7 @@ __3.user register__
 ```
 request body(JSON):
 {
+    "user_name":string,
     "user_email":string,
     "user_password":string
 }
@@ -234,12 +254,12 @@ response body{JSON}:
 ``` 
 __4.seat register__ 
     method: post
-    URL: {host}:{port}/powercubicle/v1/seat/register
+    URL: {host}:{port}/powercubicle/v1/db/seat/register
 ```
 request body(JSON):
 {
     "seat_number":string,
-    "time":{year-month-day} string
+    "time_for_use":enum[0.5, 1]
 }
 ```
 ```
@@ -249,7 +269,25 @@ response body{JSON}:
 {
     "status": "success",
 }
-``` 
+```
+__5.user login status check__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/db/user/login/status
+    describe: check whether the login session key is outdated
+```
+request body(JSON):
+{
+    "session_key":string
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "status": "success",
+}
+```  
 ### Managemnt Account
 __1.update key__ 
     method: post
