@@ -102,6 +102,7 @@ status code: 200
 response body{JSON}:
 {
     "status": "success",
+    "session_key":string
 }
 ``` 
 __3.user login__ 
@@ -120,6 +121,7 @@ status code: 200
 response body{JSON}:
 {
     "status": "success",
+    "session_key":string
 }
 ``` 
 __4.user login status check__ 
@@ -256,6 +258,7 @@ status code: 200
 response body{JSON}:
 {
     "status": "success",
+    "session_key":string
 }
 ``` 
 __3.get user password__ 
@@ -267,6 +270,7 @@ status code: 200
 response body{JSON}:
 {
     "status": "success",
+    "session_key":string
 }
 ``` 
 __4.seat register__ 
