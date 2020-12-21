@@ -105,7 +105,7 @@ response body{JSON}:
     "session_key":string
 }
 ``` 
-__3.user login__ 
+__4.user login__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/user/login
 ```
@@ -124,7 +124,7 @@ response body{JSON}:
     "session_key":string
 }
 ``` 
-__4.user login status check__ 
+__5.user login status check__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/user/login/status
     describe: check whether the login session key is outdated
@@ -142,7 +142,7 @@ response body{JSON}:
     "status": "success",
 }
 ``` 
-__5.seat register__ 
+__6.seat register__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/seat/register
 ```
@@ -160,7 +160,7 @@ response body{JSON}:
     "status": "success",
 }
 ``` 
-__5.decrypt code__ 
+__7.decrypt code__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/decrpt
 ```
@@ -181,7 +181,7 @@ response body{JSON}:
     },
 }
 ``` 
-__6.get current seat__ 
+__8.get current seat__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/user/seat
 ```
@@ -261,9 +261,17 @@ response body{JSON}:
     "session_key":string
 }
 ``` 
-__3.get user password__ 
-    method: get
-    URL: {host}:{port}/powercubicle/v1/db/user?user_email={user_email}
+__4.user login__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/db/user/login
+```
+request body(JSON):
+{
+    "user_name":string,
+    "user_email":string,
+    "user_password":string
+}
+```
 ```
 response:
 status code: 200
@@ -273,7 +281,7 @@ response body{JSON}:
     "session_key":string
 }
 ``` 
-__4.seat register__ 
+__5.seat register__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/db/seat/register
 ```
@@ -291,7 +299,7 @@ response body{JSON}:
     "status": "success",
 }
 ```
-__5.user login status check__ 
+__6.user login status check__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/db/user/login/status
     describe: check whether the login session key is outdated
@@ -309,7 +317,7 @@ response body{JSON}:
     "status": "success",
 }
 ```
-__6.get current seat__ 
+__7.get current seat__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/db/user/seat
 ```
