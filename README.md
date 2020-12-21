@@ -179,6 +179,23 @@ response body{JSON}:
     },
 }
 ``` 
+__6.get current seat__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/user/seat
+```
+request body(JSON):
+{
+    "session_key":string
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "seat": "A1"
+}
+``` 
 ### database middleware
 __1.check all seats status__
     method: get
@@ -287,7 +304,24 @@ response body{JSON}:
 {
     "status": "success",
 }
-```  
+```
+__6.get current seat__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/db/user/seat
+```
+request body(JSON):
+{
+    "session_key":string
+}
+```
+```
+response:
+status code: 200
+response body{JSON}:
+{
+    "seat": "A1"
+}
+``` 
 ### Managemnt Account
 __1.update key__ 
     method: post
