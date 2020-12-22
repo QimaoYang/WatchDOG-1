@@ -8,7 +8,7 @@ import (
 )
 
 func handleRequests() {
-	http.HandleFunc("/powercubicle/v1/encrpt", management.EncrptCode)
+	http.HandleFunc("/powercubicle/v1/seat/encrpt", management.EncrptCode)
 	err := http.ListenAndServe(":12076", nil)
 	if err != nil {
 		log.Fatal(err)

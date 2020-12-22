@@ -5,6 +5,7 @@ import (
 	"crypto/cipher"
 	"crypto/des"
 	"net/http"
+	"time"
 
 	"encoding/hex"
 	"fmt"
@@ -40,9 +41,8 @@ func EncrptCode(w http.ResponseWriter, r *http.Request) {
 	key, err := ioutil.ReadAll(file)
 
 	// seat_number := "WS02.02128"
-	// currentTime := time.Now().Format("2006-01-02 15:04:05")
 	seat_number := r.PostFormValue("seat_number")
-	currentTime := r.PostFormValue("currentTime")
+	currentTime := time.Now().Format("2006-01-02 15:04:05")
 	cipher_text := []byte(seat_number + currentTime)
 	fmt.Println(string(cipher_text))
 	encryp_text := encryptDES(cipher_text, key)
