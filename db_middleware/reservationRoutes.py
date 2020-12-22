@@ -25,6 +25,8 @@ class getAvailable(Resource):
     @api.doc(description="Get all available seats")
     def get(self):
         resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).all()
+        resv = [x[0] for x in resv]
+        print(resv)
         query = db.session.query(Seat).filter(Seat.id.notin_(resv)).all()
         return [jsontifySeat(s) for s in query], 200
 
@@ -34,7 +36,7 @@ class getAvailable(Resource):
     @api.doc(description="Get all available seats filter by area")
     def get(self, aid):
         resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).all()
-        query = db.session.query(Seat).filter(Seat.aid == aid).filter(Seat.id.notin_(resv)).all()
+        query = db.session.query(Seat).filter(Seat.aid == aid).filter(Seat.id.notin_([x[0] for x in resv])).all()
         return [jsontifySeat(s) for s in query], 200
 
 
@@ -43,7 +45,7 @@ class getAvailable(Resource):
     @api.doc(description="Get all available seat count filter by area")
     def get(self, aid):
         resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).all()
-        query = db.session.query(Seat).filter(Seat.aid == aid).filter(Seat.id.notin_(resv)).count()
+        query = db.session.query(Seat).filter(Seat.aid == aid).filter(Seat.id.notin_([x[0] for x in resv])).count()
         available = db.session.query(Seat).filter(Seat.aid == aid).count()
         return {
                    "max": query,
