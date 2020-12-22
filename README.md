@@ -55,8 +55,8 @@ response body(JSON):
     "data": {
         "region": "all"
         "seats":[
-            {"A" : 10},
-            {"B": 2},
+            {id: "A", rest: 10},
+            {id: "B", rest: 2},
                 ...
         ]
     }
@@ -74,8 +74,8 @@ response body(JSON):
     "data": {
         "region":{region_code}
         "seats":[
-            {"A1" : "availble"},
-            {"A2": "Zhang3"},
+            {id: "1", info: "availble"},
+            {id: "2", info: "Zhang3"},
                 ...
         ]
     }
