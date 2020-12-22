@@ -54,13 +54,11 @@ response body(JSON):
     "status": "success",
     "data": {
         "region": "all"
-        "seats":{
-            [
-                "A1" : "availble",
-                "B2": "Zhang3",
+        "seats":[
+            {"A" : 10},
+            {"B": 2},
                 ...
-            ]  
-        }
+        ]
     }
 }
 ```
@@ -75,13 +73,11 @@ response body(JSON):
     "status": "success",
     "data": {
         "region":{region_code}
-        "seats":{
-            [
-                "A1" : "availble",
-                "B2": "Zhang3",
+        "seats":[
+            {"A1" : "availble"},
+            {"A2": "Zhang3"},
                 ...
-            ]  
-        }
+        ]
     }
 }
 ```
@@ -234,7 +230,7 @@ response body(JSON):
         "seats":{
             [
                 "A1" : "availble",
-                "B2": "Zhang3",
+                "A2": "Li4",
                 ...
             ]  
         }
