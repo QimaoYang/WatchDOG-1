@@ -28,15 +28,13 @@ __2.encrypt code__
 request body(JSON):
 {
     "seat_number":string,
-    "time":{year-month-day hh:mm:ss} string
 }
 ```
 ```
 response:
-status code: 200
+status code: 201
 response body{JSON}:
 {
-    "status": "success",
     "data": {
         "encryp_text":[]byte    
     },
@@ -51,14 +49,13 @@ response:
 status code: 200
 response body(JSON):
 {
-    "status": "success",
     "data": {
-        "region": "all"
-        "seats":[
-            {id: "A", rest: 10},
-            {id: "B", rest: 2},
+        "seats":
+            [
+                {"A" : 10},
+                {"B": 19},
                 ...
-        ]
+            ]  
     }
 }
 ```
@@ -70,13 +67,11 @@ response:
 status code: 200
 response body(JSON):
 {
-    "status": "success",
     "data": {
-        "region":{region_code}
         "seats":[
-            {id: "1", info: "availble"},
-            {id: "2", info: "Zhang3"},
-                ...
+            {"A1" : "availble"},
+            {"A2": "Zhang3"},
+            ...
         ]
     }
 }
@@ -88,16 +83,14 @@ __3.user register__
 request body(JSON):
 {
     "user_name":string,
-    "user_email":string,
     "user_password":string
 }
 ```
 ```
 response:
-status code: 200
+status code: 201
 response body{JSON}:
 {
-    "status": "success",
     "session_key":string
 }
 ``` 
@@ -107,56 +100,43 @@ __4.user login__
 ```
 request body(JSON):
 {
-    "user_email":string,
+    "user_name":string,
     "user_password":string
 }
 ```
 ```
 response:
-status code: 200
+status code: 201
 response body{JSON}:
 {
-    "status": "success",
-    "session_key":string
+    "session_key":string,
 }
 ``` 
-__5.user login status check__ 
-    method: post
-    URL: {host}:{port}/powercubicle/v1/user/login/status
-    describe: check whether the login session key is outdated
-```
-request body(JSON):
-{
-    "session_key":string
-}
-```
-```
-response:
-status code: 200
-response body{JSON}:
-{
-    "status": "success",
-}
-``` 
-__6.seat register__ 
+__5.seat register__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/seat/register
 ```
 request body(JSON):
+header:{Auth:{$session_token}}
 {
     "encrypted_qrcode":string,
-    "time_for_use":enum[0.5, 1]
 }
 ```
 ```
 response:
-status code: 200
-response body{JSON}:
-{
-    "status": "success",
-}
+status code: 201
 ``` 
-__7.decrypt code__ 
+__5-1.seat release__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/seat/release
+```
+header:{Auth:{$session_token}}
+```
+```
+response:
+status code: 201
+``` 
+__6.decrypt code__(method) --->liyuan
     method: post
     URL: {host}:{port}/powercubicle/v1/decrpt
 ```
@@ -177,21 +157,18 @@ response body{JSON}:
     },
 }
 ``` 
-__8.get current seat__ 
-    method: post
+__7.get current seat__ 
+    method: get
     URL: {host}:{port}/powercubicle/v1/user/seat
 ```
-request body(JSON):
-{
-    "session_key":string
-}
+header:{"session_key":string}
 ```
 ```
 response:
 status code: 200
 response body{JSON}:
 {
-    "seat": "A1"
+    "seat": "A1"/nil
 }
 ``` 
 ### database middleware
@@ -203,16 +180,13 @@ response:
 status code: 200
 response body(JSON):
 {
-    "status": "success",
     "data": {
-        "region": "all"
-        "seats":{
+        "seats":
             [
-                "A1" : "availble",
-                "B2": "Zhang3",
+                {"A" : 10},
+                {"B": 19},
                 ...
             ]  
-        }
     }
 }
 ```
@@ -224,16 +198,12 @@ response:
 status code: 200
 response body(JSON):
 {
-    "status": "success",
     "data": {
-        "region":{region_code}
-        "seats":{
-            [
-                "A1" : "availble",
-                "A2": "Li4",
-                ...
-            ]  
-        }
+        "seats":[
+            {"A1" : "availble"},
+            {"A2": "Zhang3"},
+            ...
+        ]
     }
 }
 ```
@@ -244,16 +214,14 @@ __3.user register__
 request body(JSON):
 {
     "user_name":string,
-    "user_email":string,
     "user_password":string
 }
 ```
 ```
 response:
-status code: 200
+status code: 201
 response body{JSON}:
 {
-    "status": "success",
     "session_key":string
 }
 ``` 
@@ -264,70 +232,54 @@ __4.user login__
 request body(JSON):
 {
     "user_name":string,
-    "user_email":string,
     "user_password":string
 }
 ```
 ```
 response:
-status code: 200
+status code: 201
 response body{JSON}:
 {
-    "status": "success",
-    "session_key":string
+    "session_key":string,
 }
 ``` 
 __5.seat register__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/db/seat/register
 ```
+header:{Auth:{$session_token}}
 request body(JSON):
 {
-    "seat_number":string,
-    "time_for_use":enum[0.5, 1]
+    "encrypted_qrcode":string,
+    "time_for_use":enum[-0.5, +0.5, 1]
 }
 ```
 ```
 response:
-status code: 200
-response body{JSON}:
-{
-    "status": "success",
-}
+status code: 201
 ```
-__6.user login status check__ 
+__5-1.seat release__ 
     method: post
-    URL: {host}:{port}/powercubicle/v1/db/user/login/status
-    describe: check whether the login session key is outdated
+    URL: {host}:{port}/powercubicle/v1/seat/release
 ```
-request body(JSON):
-{
-    "session_key":string
-}
+header:{Auth:{$session_token}}
 ```
 ```
 response:
-status code: 200
-response body{JSON}:
-{
-    "status": "success",
-}
-```
-__7.get current seat__ 
-    method: post
+status code: 201
+``` 
+__6.get current seat__ 
+    method: get
     URL: {host}:{port}/powercubicle/v1/db/user/seat
 ```
-request body(JSON):
-{
-    "session_key":string
-}
+header:{"session_key":string}
 ```
 ```
 response:
 status code: 200
 response body{JSON}:
 {
-    "seat": "A1"
+    "seat": "A1"/nil
 }
 ``` 
 ### Managemnt Account
