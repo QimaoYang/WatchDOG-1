@@ -6,10 +6,10 @@ import (
 	"crypto/des"
 	"net/http"
 
+	"encoding/hex"
 	"fmt"
 	"io/ioutil"
 	"os"
-	"time"
 )
 
 func padding(src []byte, blocksize int) []byte {
@@ -29,8 +29,9 @@ func encryptDES(src []byte, key []byte) []byte {
 }
 
 func EncrptCode(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
 	exPath, _ := os.Getwd()
-	// fmt.Println("expath", exPath)
+	fmt.Println("expath: ", exPath)
 	file, err := os.Open(exPath + "\\" + "management\\key.txt")
 	if err != nil {
 		panic(err)
@@ -38,13 +39,16 @@ func EncrptCode(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 	key, err := ioutil.ReadAll(file)
 
-	seat_number := "WS02.02128"
-	currentTime := time.Now().Format("2006-01-02 15:04:05")
+	// seat_number := "WS02.02128"
+	// currentTime := time.Now().Format("2006-01-02 15:04:05")
+	seat_number := r.PostFormValue("seat_number")
+	currentTime := r.PostFormValue("currentTime")
 	cipher_text := []byte(seat_number + currentTime)
 	fmt.Println(string(cipher_text))
-
 	encryp_text := encryptDES(cipher_text, key)
 	fmt.Println(encryp_text)
-	// encodedStr := hex.EncodeToString(encryp_text)
-	// fmt.Println("byte convert str:", encodedStr)
+
+	encodedStr := hex.EncodeToString(encryp_text)
+	fmt.Println("byte convert str:", encodedStr)
+	fmt.Fprintf(w, "encryp_text = "+encodedStr)
 }

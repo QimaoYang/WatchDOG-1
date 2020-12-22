@@ -5,6 +5,7 @@ import (
 	"crypto/des"
 	"net/http"
 
+	"encoding/hex"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -26,8 +27,9 @@ func decryptDES(src []byte, key []byte) string {
 }
 
 func DecrptCode(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
 	exPath, _ := os.Getwd()
-	// fmt.Println("expath", exPath)
+	fmt.Println("expath: ", exPath)
 	file, err := os.Open(exPath + "\\" + "management\\key.txt")
 	if err != nil {
 		panic(err)
@@ -35,11 +37,16 @@ func DecrptCode(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 	key, err := ioutil.ReadAll(file)
 
-	encryp_text := []byte{205, 147, 30, 249, 67, 158, 150, 106, 221, 176, 252, 231, 75, 40, 177, 235, 159, 40, 106, 85, 36, 237, 205, 154, 38, 251, 151, 0, 110, 36, 60, 215}
-	decrypt_text := decryptDES(encryp_text, key)
+	// encryp_text := "cd931ef9439e966addb0fce74b28b1ebcdd57088f9a85be37b3beaadd845249f"
+	encryp_text := r.PostFormValue("encryp_text")
+	decodedStr, err := hex.DecodeString(encryp_text)
+	fmt.Println(decodedStr)
+	decrypt_text := decryptDES(decodedStr, key)
 	fmt.Println(decrypt_text)
 	seat_number := decrypt_text[:10]
 	time := decrypt_text[10:]
 	fmt.Println(seat_number)
 	fmt.Println(time)
+	fmt.Fprintln(w, "seat_number = "+seat_number)
+	fmt.Fprintln(w, "time = "+time)
 }
