@@ -1,9 +1,9 @@
 # WatchDOG
 ## API Design
 ### backend_inner
-__1.generate QRcode__ 
+__1.encrypt code__ 
     method: post
-    URL: {host}:{port}/powercubicle/v1/seat/qrcode
+    URL: {host}:{port}/powercubicle/v1/seat/encrpt
 ```
 request body(JSON):
 {
@@ -12,31 +12,11 @@ request body(JSON):
 ```
 ```
 response:
-status code: 200
-response body{JSON}:
-{
-    "status": "success",
-    "data": {
-        "qr_code":{encrypted_string}    
-    },
-}
-``` 
-__2.encrypt code__ 
-    method: post
-    URL: {host}:{port}/powercubicle/v1/encrpt
-```
-request body(JSON):
-{
-    "seat_number":string,
-}
-```
-```
-response:
 status code: 201
 response body{JSON}:
 {
     "data": {
-        "encryp_text":[]byte    
+        "encryp_text":string    
     },
 }
 ``` 
@@ -135,29 +115,8 @@ header:{Auth:{$session_token}}
 ```
 response:
 status code: 201
-``` 
-__6.decrypt code__(method) --->liyuan
-    method: post
-    URL: {host}:{port}/powercubicle/v1/decrpt
-```
-request body(JSON):
-{
-    "encryp_text":[]byte
-}
-```
-```
-response:
-status code: 200
-response body{JSON}:
-{
-    "status": "success",
-    "data": {
-        "seat_number":{string},
-        "time":{year-month-day hh:mm:ss}
-    },
-}
-``` 
-__7.get current seat__ 
+```  
+__6.get current seat__ 
     method: get
     URL: {host}:{port}/powercubicle/v1/user/seat
 ```
