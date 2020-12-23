@@ -3,7 +3,7 @@
 ### backend_inner
 __1.encrypt code__ 
     method: post
-    URL: {host}:{port}/powercubicle/v1/seat/encrpt
+    URL: {host}:{port}/powercubicle/v1/seat/encrypt
 ```
 request body(JSON):
 {

@@ -25,10 +25,11 @@ func decryptDES(src []byte, key []byte) string {
 	return string(src)
 }
 
-func DecrptCode(encryp_text string) string {
+func DecryptCode(encryp_text string) string {
 	exPath, _ := os.Getwd()
 	fmt.Println("expath: ", exPath)
 	file, err := os.Open(exPath + "\\" + "management\\key.txt")
+	// file, err := os.Open(exPath + "/" + "key.txt")
 	if err != nil {
 		panic(err)
 	}
