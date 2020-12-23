@@ -132,3 +132,4 @@ class getAvailable(Resource):
                        }, 200
         except:
             return {"message": "bad payload"}, 400
+
