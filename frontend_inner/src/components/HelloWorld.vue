@@ -39,7 +39,7 @@ export default {
             console.log(res.status)
           })
           alert(this.encrypt_data)
-          this.result = '已生成可扫描二维码'       
+          this.result = '已生成可扫描二维码'
           this.qr_value = this.encrypt_data
           this.code_show = 1
         } else {
@@ -60,12 +60,12 @@ export default {
     }
   },
   watch: {
-    encrypt_data() {
+    encrypt_data () {
       if (this.encrypt_data === '') {
-        return;
+        return
       }
       alert(this.encrypt_data)
-      this.encrypt_data = '';
+      this.encrypt_data = ''
     }
   }
 }
