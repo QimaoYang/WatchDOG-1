@@ -131,4 +131,6 @@ class getAvailable(Resource):
                            "seat": None
                        }, 200
         except:
+
             return {"message": "bad payload"}, 400
+

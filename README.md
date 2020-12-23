@@ -1,24 +1,22 @@
 # WatchDOG
 ## API Design
 ### backend_inner
-__1.generate QRcode__ 
+__1.encrypt code__ 
     method: post
-    URL: {host}:{port}/powercubicle/v1/qrcode
+    URL: {host}:{port}/powercubicle/v1/seat/encrypt
 ```
 request body(JSON):
 {
-    "seat_number":string,
-    "time":{year-month-day} string
+    "seat_number":string
 }
 ```
 ```
 response:
-status code: 200
+status code: 201
 response body{JSON}:
 {
-    "status": "success",
     "data": {
-        "qr_code":{encrypted_string}    
+        "encryp_text":string    
     },
 }
 ``` 
@@ -31,16 +29,13 @@ response:
 status code: 200
 response body(JSON):
 {
-    "status": "success",
     "data": {
-        "region": "all"
-        "seats":{
+        "seats":
             [
-                "A1" : "availble",
-                "B2": "unavailble",
+                {"A" : 10},
+                {"B": 19},
                 ...
             ]  
-        }
     }
 }
 ```
@@ -52,16 +47,12 @@ response:
 status code: 200
 response body(JSON):
 {
-    "status": "success",
     "data": {
-        "region":{region_code}
-        "seats":{
-            [
-                "A1" : "availble",
-                "B2": "unavailble",
-                ...
-            ]  
-        }
+        "seats":[
+            {"A1" : "availble"},
+            {"A2": "Zhang3"},
+            ...
+        ]
     }
 }
 ```
@@ -71,51 +62,72 @@ __3.user register__
 ```
 request body(JSON):
 {
-    "user_email":string,
+    "user_name":string,
     "user_password":string
 }
 ```
 ```
 response:
-status code: 200
+status code: 201
 response body{JSON}:
 {
-    "status": "success",
+    "session_key":string
 }
 ``` 
-__3.user login__ 
+__4.user login__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/user/login
 ```
 request body(JSON):
 {
-    "user_email":string,
+    "user_name":string,
     "user_password":string
 }
 ```
 ```
 response:
-status code: 200
+status code: 201
 response body{JSON}:
 {
-    "status": "success",
+    "session_key":string,
 }
 ``` 
-__4.seat register__ 
+__5.seat register__ 
     method: post
     URL: {host}:{port}/powercubicle/v1/seat/register
 ```
 request body(JSON):
+header:{Auth:{$session_token}}
 {
     "encrypted_qrcode":string,
 }
 ```
 ```
 response:
+status code: 201
+``` 
+__5-1.seat release__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/seat/release
+```
+header:{Auth:{$session_token}}
+```
+```
+response:
+status code: 201
+```  
+__6.get current seat__ 
+    method: get
+    URL: {host}:{port}/powercubicle/v1/user/seat
+```
+header:{"session_key":string}
+```
+```
+response:
 status code: 200
 response body{JSON}:
 {
-    "status": "success",
+    "seat": "A1"/nil
 }
 ``` 
 ### database middleware
@@ -127,16 +139,13 @@ response:
 status code: 200
 response body(JSON):
 {
-    "status": "success",
     "data": {
-        "region": "all"
-        "seats":{
+        "seats":
             [
-                "A1" : "availble",
-                "B2": "unavailble",
+                {"A" : 10},
+                {"B": 19},
                 ...
             ]  
-        }
     }
 }
 ```
@@ -148,16 +157,12 @@ response:
 status code: 200
 response body(JSON):
 {
-    "status": "success",
     "data": {
-        "region":{region_code}
-        "seats":{
-            [
-                "A1" : "availble",
-                "B2": "unavailble",
-                ...
-            ]  
-        }
+        "seats":[
+            {"A1" : "availble"},
+            {"A2": "Zhang3"},
+            ...
+        ]
     }
 }
 ```
@@ -167,45 +172,73 @@ __3.user register__
 ```
 request body(JSON):
 {
-    "user_email":string,
+    "user_name":string,
     "user_password":string
 }
 ```
 ```
 response:
-status code: 200
+status code: 201
 response body{JSON}:
 {
-    "status": "success",
+    "session_key":string
 }
 ``` 
-__3.get user password__ 
-    method: get
-    URL: {host}:{port}/powercubicle/v1/db/user?user_email={user_email}
-```
-response:
-status code: 200
-response body{JSON}:
-{
-    "status": "success",
-}
-``` 
-__4.seat register__ 
+__4.user login__ 
     method: post
-    URL: {host}:{port}/powercubicle/v1/seat/register
+    URL: {host}:{port}/powercubicle/v1/db/user/login
 ```
 request body(JSON):
 {
-    "seat_number":string,
-    "time":{year-month-day} string
+    "user_name":string,
+    "user_password":string
 }
+```
+```
+response:
+status code: 201
+response body{JSON}:
+{
+    "session_key":string,
+}
+``` 
+__5.seat register__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/db/seat/register
+```
+header:{Auth:{$session_token}}
+request body(JSON):
+{
+    "encrypted_qrcode":string,
+    "time_for_use":enum[-0.5, +0.5, 1]
+}
+```
+```
+response:
+status code: 201
+```
+__5-1.seat release__ 
+    method: post
+    URL: {host}:{port}/powercubicle/v1/seat/release
+```
+header:{Auth:{$session_token}}
+```
+```
+response:
+status code: 201
+``` 
+__6.get current seat__ 
+    method: get
+    URL: {host}:{port}/powercubicle/v1/db/user/seat
+```
+header:{"session_key":string}
 ```
 ```
 response:
 status code: 200
 response body{JSON}:
 {
-    "status": "success",
+    "seat": "A1"/nil
 }
 ``` 
 ### Managemnt Account

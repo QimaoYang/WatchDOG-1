@@ -6,7 +6,7 @@
     <button v-on:click="greet" style = "font-size:13px;">生成心动的二维码</button>
     <button v-on:click="clean" style = "font-size:13px;">清空</button>
     <p style = "font-size:18px;">{{result}}</p>
-    <vue-qr :logoSrc="imageUrl" text="qr_value" :size="200" v-show="code_show == 1"></vue-qr>
+    <vue-qr :logoSrc="imageUrl" :text="qr_value" :size="200" v-show="code_show == 1"></vue-qr>
   </div>
 </template>
 
@@ -20,6 +20,7 @@ export default {
       result: '未生成有效二维码',
       qr_value: 'test',
       code_show: 0,
+      encrypt_data: {},
       imageUrl: require('../assets/vxrail.png')
     }
   },
@@ -29,16 +30,31 @@ export default {
   methods: {
     greet: function (event) {
       if (event) {
-        this.result = '已生成可扫描二维码',
-        this.code_show = 1,
-        this.qr_value = 'https://baidu.com/'
+        if (this.site_num.length === 5) {
+          this.site_string = 'WS02.' + this.site_num
+          this.$http.post('http://127.0.0.1:12076/powercubicle/v1/seat/encrypt', {'seat_number': this.site_string}, {emulateJSON: true}).then(function (res) {
+            console.log(res.body)
+            this.encrypt_data = res.body
+          }, function (res) {
+            console.log(res.status)
+          })
+          alert(this.encrypt_data)
+          this.result = '已生成可扫描二维码'
+          this.code_show = 1
+          this.qr_value = 'https://baidu.com/'
+        } else {
+          this.result = '未生成有效二维码'
+          this.code_show = 0
+          this.qr_value = 'test'
+          alert('Please input 5 characters!')
+        }
       }
     },
     clean: function (event) {
       if (event) {
-        this.site_num = '',
-        this.result = '未生成有效二维码',
-        this.code_show = 0,
+        this.site_num = ''
+        this.result = '未生成有效二维码'
+        this.code_show = 0
         this.qr_value = 'test'
       }
     }
