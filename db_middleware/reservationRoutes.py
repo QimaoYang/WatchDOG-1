@@ -35,7 +35,7 @@ class getAvailable(Resource):
 class getAvailable(Resource):
     @api.doc(description="Get all available seats filter by area")
     def get(self, aid):
-        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time <= datetime.now().time()).all()
+        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now().time()).all()
         query = db.session.query(Seat).filter(Seat.aid == aid).filter(Seat.id.notin_([x[0] for x in resv])).all()
         return [jsontifySeat(s) for s in query], 200
 
@@ -44,7 +44,7 @@ class getAvailable(Resource):
 class getAvailable(Resource):
     @api.doc(description="Get all available seat count filter by area")
     def get(self, aid):
-        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time <= datetime.now().time()).all()
+        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now().time()).all()
         query = db.session.query(Seat).filter(Seat.aid == aid).filter(Seat.id.notin_([x[0] for x in resv])).count()
         available = db.session.query(Seat).filter(Seat.aid == aid).count()
         return {
@@ -131,6 +131,5 @@ class getAvailable(Resource):
                            "seat": None
                        }, 200
         except:
-
             return {"message": "bad payload"}, 400
 
