@@ -6,7 +6,7 @@
     <button v-on:click="greet" style = "font-size:13px;">生成心动的二维码</button>
     <button v-on:click="clean" style = "font-size:13px;">清空</button>
     <p style = "font-size:18px;">{{result}}</p>
-    <vue-qr :logoSrc="imageUrl" text="qr_value" :size="200" v-show="code_show == 1"></vue-qr>
+    <vue-qr :logoSrc="imageUrl" :text="qr_value" :size="200" v-show="code_show == 1"></vue-qr>
   </div>
 </template>
 
@@ -29,16 +29,23 @@ export default {
   methods: {
     greet: function (event) {
       if (event) {
-        this.result = '已生成可扫描二维码',
-        this.code_show = 1,
-        this.qr_value = 'https://baidu.com/'
+        if (this.site_num.length === 5) {
+          this.result = '已生成可扫描二维码'
+          this.code_show = 1
+          this.qr_value = 'https://baidu.com/'
+        } else {
+          this.result = '未生成有效二维码'
+          this.code_show = 0
+          this.qr_value = 'test'
+          alert('Please input 5 characters!')
+        }
       }
     },
     clean: function (event) {
       if (event) {
-        this.site_num = '',
-        this.result = '未生成有效二维码',
-        this.code_show = 0,
+        this.site_num = ''
+        this.result = '未生成有效二维码'
+        this.code_show = 0
         this.qr_value = 'test'
       }
     }
