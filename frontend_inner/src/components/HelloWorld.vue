@@ -34,7 +34,7 @@ export default {
           this.site_string = 'WS02.' + this.site_num
           this.$http.post('http://127.0.0.1:12076/powercubicle/v1/seat/encrypt', {'seat_number': this.site_string}, {emulateJSON: true}).then(function (res) {
             console.log(res.body)
-            this.encrypt_data = res.body
+            this.encrypt_data = JSON.stringify(res.body)
           }, function (res) {
             console.log(res.status)
           })
