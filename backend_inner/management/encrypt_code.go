@@ -29,11 +29,12 @@ func encryptDES(src []byte, key []byte) []byte {
 	return src
 }
 
-func EncrptCode(w http.ResponseWriter, r *http.Request) {
+func EncryptCode(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	exPath, _ := os.Getwd()
 	fmt.Println("expath: ", exPath)
 	file, err := os.Open(exPath + "\\" + "management\\key.txt")
+	// file, err := os.Open(exPath + "/" + "key.txt")
 	if err != nil {
 		panic(err)
 	}
