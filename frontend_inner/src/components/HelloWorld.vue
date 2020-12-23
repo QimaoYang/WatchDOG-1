@@ -20,7 +20,7 @@ export default {
       result: '未生成有效二维码',
       qr_value: 'test',
       code_show: 0,
-      encrypt_data: {},
+      encrypt_data: '',
       imageUrl: require('../assets/vxrail.png')
     }
   },
@@ -41,7 +41,7 @@ export default {
           alert(this.encrypt_data)
           this.result = '已生成可扫描二维码'
           this.code_show = 1
-          this.qr_value = 'https://baidu.com/'
+          this.qr_value = this.encrypt_data
         } else {
           this.result = '未生成有效二维码'
           this.code_show = 0
