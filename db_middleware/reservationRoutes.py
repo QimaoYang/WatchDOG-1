@@ -58,7 +58,7 @@ resource_fields = api.model('reservations_form', reservations_form)
 
 @api.route('/release')
 class getAvailable(Resource):
-    @api.doc(description="Create a reservation")
+    @api.doc(description="Release a reservation")
     @jwt_required
     @api.expect(resource_fields)
     @api.param("Authorization", _in='header')
@@ -105,5 +105,29 @@ class getAvailable(Resource):
                 return reservations.id, 200
             else:
                 return {"message": "The seat has been reserved"}, 400
+        except:
+            return {"message": "bad payload"}, 400
+
+@api.route('/usar/seat')
+class getAvailable(Resource):
+    @api.doc(description="get seat code")
+    @jwt_required
+    @api.param("Authorization", _in='header')
+    def get(self):
+        try:
+            current_user = get_jwt_identity()
+            user = User.query.filter_by(username=current_user).first()
+
+            exists_result = db.session.query(Reservation).with_lockmode("update").filter(
+                Reservation.user_id == user.id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now().time()).first()
+            if exists_result:
+                s = db.session.query(Seat).filter(Seat.id == exists_result.seat_id).first()
+                return {
+                           "seat": s.seatCode
+                       }, 200
+            else:
+                return {
+                           "seat": None
+                       }, 200
         except:
             return {"message": "bad payload"}, 400
