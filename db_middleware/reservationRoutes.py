@@ -84,7 +84,7 @@ class getAvailable(Resource):
     @jwt_required
     @api.param("Authorization", _in='header')
     def post(self):
-        #try:
+        try:
             r = request.data.decode()
             r = json.loads(r)
             current_user = get_jwt_identity()
@@ -105,5 +105,5 @@ class getAvailable(Resource):
                 return reservations.id, 200
             else:
                 return {"message": "The seat has been reserved"}, 400
-        #except:
-        #    return {"message": "bad payload"}, 400
+        except:
+            return {"message": "bad payload"}, 400
