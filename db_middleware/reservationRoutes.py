@@ -24,7 +24,7 @@ api = Namespace('Reservation', description='Reservation')
 class getAvailable(Resource):
     @api.doc(description="Get all available seats")
     def get(self):
-        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time <= datetime.now().time()).all()
+        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now().time()).all()
         resv = [x[0] for x in resv]
         print(resv)
         query = db.session.query(Seat).filter(Seat.id.notin_(resv)).all()
@@ -53,14 +53,12 @@ class getAvailable(Resource):
                }, 200
 
 
-resource_fields = api.model('reservations_form', reservations_form)
 
 
 @api.route('/release')
 class getAvailable(Resource):
     @api.doc(description="Release a reservation")
     @jwt_required
-    @api.expect(resource_fields)
     @api.param("Authorization", _in='header')
     def post(self):
         try:
@@ -78,10 +76,13 @@ class getAvailable(Resource):
         except:
             return {"message": "bad payload"}, 400
 
+resource_fields = api.model('reservations_form', reservations_form)
+
 @api.route('/reservations')
 class getAvailable(Resource):
     @api.doc(description="Create a reservation")
     @jwt_required
+    @api.expect(resource_fields)
     @api.param("Authorization", _in='header')
     def post(self):
         try:
@@ -130,4 +131,6 @@ class getAvailable(Resource):
                            "seat": None
                        }, 200
         except:
+
             return {"message": "bad payload"}, 400
+
