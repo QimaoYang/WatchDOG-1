@@ -33,15 +33,15 @@ export default {
         if (this.site_num.length === 5) {
           this.site_string = 'WS02.' + this.site_num
           this.$http.post('http://127.0.0.1:12076/powercubicle/v1/seat/encrypt', {'seat_number': this.site_string}, {emulateJSON: true}).then(function (res) {
-            console.log(res.body)
-            this.encrypt_data = JSON.stringify(res.body)
+            this.encrypt_data = res.body.msg
+            console.log(this.encrypt_data)
           }, function (res) {
             console.log(res.status)
           })
           alert(this.encrypt_data)
-          this.result = '已生成可扫描二维码'
-          this.code_show = 1
+          this.result = '已生成可扫描二维码'       
           this.qr_value = this.encrypt_data
+          this.code_show = 1
         } else {
           this.result = '未生成有效二维码'
           this.code_show = 0
@@ -57,6 +57,15 @@ export default {
         this.code_show = 0
         this.qr_value = 'test'
       }
+    }
+  },
+  watch: {
+    encrypt_data() {
+      if (this.encrypt_data === '') {
+        return;
+      }
+      alert(this.encrypt_data)
+      this.encrypt_data = '';
     }
   }
 }
