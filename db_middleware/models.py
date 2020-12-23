@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from datetime import date
 from app import db
+from datetime import timedelta
 
 #db table structure
 class User(db.Model):
@@ -48,8 +49,8 @@ class Reservation(db.Model):
     seat_id = db.Column(db.Integer, ForeignKey('seats.id'))
     user_id = db.Column(db.Integer, ForeignKey('users.id'))
     date = db.Column(db.Date, default=date.today())
-    start_time = db.Column(db.Time)
-    end_time = db.Column(db.Time)
+    start_time = db.Column(db.Time, default=datetime.now().time())
+    end_time = db.Column(db.Time, default=(datetime.now()+timedelta(hours=9)).time())
     created = db.Column(db.DateTime, default=datetime.now())
-    release_time = db.Column(db.Time)
+    release_time = db.Column(db.Time, default=(datetime.now()+timedelta(hours=9)).time())
     ip = db.Column(Text)

@@ -24,7 +24,7 @@ api = Namespace('Reservation', description='Reservation')
 class getAvailable(Resource):
     @api.doc(description="Get all available seats")
     def get(self):
-        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).all()
+        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time <= datetime.now().time()).all()
         resv = [x[0] for x in resv]
         print(resv)
         query = db.session.query(Seat).filter(Seat.id.notin_(resv)).all()
@@ -35,7 +35,7 @@ class getAvailable(Resource):
 class getAvailable(Resource):
     @api.doc(description="Get all available seats filter by area")
     def get(self, aid):
-        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).all()
+        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time <= datetime.now().time()).all()
         query = db.session.query(Seat).filter(Seat.aid == aid).filter(Seat.id.notin_([x[0] for x in resv])).all()
         return [jsontifySeat(s) for s in query], 200
 
@@ -44,7 +44,7 @@ class getAvailable(Resource):
 class getAvailable(Resource):
     @api.doc(description="Get all available seat count filter by area")
     def get(self, aid):
-        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).all()
+        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time <= datetime.now().time()).all()
         query = db.session.query(Seat).filter(Seat.aid == aid).filter(Seat.id.notin_([x[0] for x in resv])).count()
         available = db.session.query(Seat).filter(Seat.aid == aid).count()
         return {
@@ -56,11 +56,32 @@ class getAvailable(Resource):
 resource_fields = api.model('reservations_form', reservations_form)
 
 
-@api.route('/reservations')
+@api.route('/release')
 class getAvailable(Resource):
     @api.doc(description="Create a reservation")
     @jwt_required
     @api.expect(resource_fields)
+    @api.param("Authorization", _in='header')
+    def post(self):
+        try:
+            current_user = get_jwt_identity()
+            user = User.query.filter_by(username=current_user).first()
+
+            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.user_id == user.id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now().time()).first()
+            if exists_result:
+                exists_result.release_time = datetime.now().time()
+                db.session.commit()
+                db.session.refresh(exists_result)
+                return exists_result.id, 200
+            else:
+                return {"message": "The didn't been reserved"}, 400
+        except:
+            return {"message": "bad payload"}, 400
+
+@api.route('/reservations')
+class getAvailable(Resource):
+    @api.doc(description="Create a reservation")
+    @jwt_required
     @api.param("Authorization", _in='header')
     def post(self):
         try:
@@ -76,7 +97,7 @@ class getAvailable(Resource):
             reservations.user_id = user.id
             reservations.seat_id = r["seat_id"]
             exists_result = db.session.query(Reservation).with_lockmode("update").filter(
-                Reservation.seat_id == r["seat_id"]).filter(Reservation.date == date.today()).first()
+                Reservation.seat_id == r["seat_id"]).filter(Reservation.date == date.today()).filter(Reservation.release_time <= datetime.now().time()).first()
             if not exists_result:
                 db.session.add(reservations)
                 db.session.commit()
