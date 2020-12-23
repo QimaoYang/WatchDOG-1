@@ -20,6 +20,7 @@ export default {
       result: '未生成有效二维码',
       qr_value: 'test',
       code_show: 0,
+      encrypt_data: {},
       imageUrl: require('../assets/vxrail.png')
     }
   },
@@ -30,6 +31,14 @@ export default {
     greet: function (event) {
       if (event) {
         if (this.site_num.length === 5) {
+          this.site_string = "['WS02.'+this.site_num]"
+          this.$http.post('http://127.0.0.1:12076/powercubicle/v1/seat/encrypt', {'seat_number': this.site_string}, {emulateJSON: true}).then(function (res) {
+            console.log(res.body)
+            this.encrypt_data = res.body
+          }, function (res) {
+            console.log(res.status)
+          })
+          alert(this.encrypt_data)
           this.result = '已生成可扫描二维码'
           this.code_show = 1
           this.qr_value = 'https://baidu.com/'
