@@ -11,7 +11,7 @@ from flask_restplus import Resource, Namespace
 from forms import *
 from datetime import timedelta
 from models import *
-from flask_jwt_extended import  create_access_token, create_refresh_token, get_jti, get_jwt_identity, jwt_required, get_raw_jwt
+from flask_jwt_extended import  create_access_token, create_refresh_token, get_jti, get_jwt_identity, jwt_required, get_raw_jwt,jwt_refresh_token_required
 
 # set ACCESS TOKEN EXPIRES TIME
 ACCESS_EXPIRES = timedelta(days=1)
@@ -130,8 +130,20 @@ class changePassword(Resource):
         db.session.commit()
         return 200
 
+class refresh(Resource):
+    @api.param("Authorization", _in='header')
+    @jwt_refresh_token_required
+    def post(self):
+        current_user = get_jwt_identity()
+        ret = {
+            'access_token': create_access_token(identity=current_user)
+        }
+        return ret, 200
+
+
 #bind api to routes
 api.add_resource(Reg, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(LogOut, '/logout')
 api.add_resource(changePassword, '/password')
+api.add_resource(refresh, '/refresh')
