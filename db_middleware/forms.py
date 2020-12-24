@@ -10,4 +10,4 @@ reg_form = {'name': fields.String(default='string: xx_yy', required=True),
 }
 password_form =  {'password':fields.String(required=True)}
 
-reservations_form = {'seat_id':fields.Integer(required=True)}
+reservations_form = {'seat_code':fields.String(required=True)}

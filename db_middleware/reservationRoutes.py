@@ -96,9 +96,13 @@ class getAvailable(Resource):
             # checklist = ["start_time","end_time","ip","release_time"]
 
             reservations.user_id = user.id
-            reservations.seat_id = r["seat_id"]
-            exists_result = db.session.query(Reservation).with_lockmode("update").filter(
-                Reservation.seat_id == r["seat_id"]).filter(Reservation.date == date.today()).filter(Reservation.release_time <= datetime.now().time()).first()
+
+            s = db.session.query(Seat).filter(Seat.seatCode == r["seat_code"]).first()
+            if not s:
+                return {"message": "No such seat"}, 400
+            reservations.seat_id = s.id
+
+            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.seat_id == s.id).filter(Reservation.date == date.today()).filter(Reservation.release_time <= datetime.now().time()).first()
             if not exists_result:
                 db.session.add(reservations)
                 db.session.commit()
@@ -107,7 +111,7 @@ class getAvailable(Resource):
             else:
                 return {"message": "The seat has been reserved"}, 400
         except:
-            return {"message": "bad payload"}, 400
+           return {"message": "bad payload"}, 400
 
 @api.route('/usar/seat')
 class getAvailable(Resource):
