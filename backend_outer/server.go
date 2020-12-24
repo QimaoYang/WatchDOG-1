@@ -13,7 +13,7 @@ func handleRequests() {
 	router := mux.NewRouter()
 	wd_router := router.PathPrefix("/powercubicle/v1").Subrouter()
 	wd_router.HandleFunc("/seat", seat.RetrieveAllSeatStatus).Methods("GET")
-	wd_router.HandleFunc("/seat/register", seat.SeatRegister)
+	wd_router.HandleFunc("/seat/register", seat.SeatRegister).Methods("POST")
 	wd_router.HandleFunc("/user/login", user.UserLogin)
 	wd_router.HandleFunc("/user/register", user.UserRegister)
 

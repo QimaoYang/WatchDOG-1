@@ -1,35 +1,56 @@
 package seat
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
+	"strings"
 )
 
-// type SeatInfo struct {
-// 	Status string                 `json: status`
-// 	Data   map[string]interface{} `json: data`
-// }
+type seatStatus struct {
+	Seats []map[string]int `json:"seats"`
+}
 
 func RetrieveAllSeatStatus(w http.ResponseWriter, r *http.Request) {
-	// var seats SeatInfo
-	// seats.Status = "success"
-	// seats.Data = `{
-	// 	"region": "all"
-	// 	"seats": [
-	// 		{"A1" : "availble"},
-	// 		{"B2": "Zhang3"}
-	// 	]
-	// }`
-	seatInfo := map[string]interface{}{
-		"status": "success",
-		"data": struct {
-			name []map[string]string
-		}{name: [{"id": "A", "rest": 10}]},
+	v1 := r.URL.Query()
+	if reg, ok := v1["region"]; ok {
+		retrieveRegionSeatStatus(w, r, reg)
+	} else {
+		s := []string{"1", "2", "3"}
+		retrieveRegionSeatStatus(w, r, s)
 	}
-	
+}
+
+func retrieveRegionSeatStatus(w http.ResponseWriter, r *http.Request, selectedRegion []string) {
+	seatInfo := []map[string]int{}
+	for _, v := range selectedRegion {
+		fmt.Println(v)
+		response, err := http.Get(strings.Join([]string{"http://localhost:5001/Reservation/available", v, "count"}, "/"))
+
+		if err != nil {
+			fmt.Print(err.Error())
+		}
+
+		responseData, err := ioutil.ReadAll(response.Body)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		var responseObject map[string]int
+		errJson := json.Unmarshal(responseData, &responseObject)
+		if errJson != nil {
+			fmt.Println(errJson)
+		}
+
+		fmt.Println(string(responseData))
+		fmt.Println(responseObject)
+		seatInfo = append(seatInfo, map[string]int{v: responseObject["available"]})
+	}
 	fmt.Println(seatInfo)
-	// responseData := []byte(seatJson)
-	// fmt.Println(responseData)
-	// json.NewEncoder(w).Encode(seatInfo)
-	// fmt.Println("Endpoint Hit: RetrieveAllSeatStatus")
+	m := seatStatus{Seats: seatInfo}
+	fmt.Println(m)
+	json.NewEncoder(w).Encode(m)
 }
