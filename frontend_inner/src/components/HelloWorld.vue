@@ -16,11 +16,11 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      site_num: 0,
+      site_num: 'WS02.',
       result: '未生成有效二维码',
       qr_value: 'test',
       code_show: 0,
-      encrypt_data: '',
+      encrypt_data: 'testme',
       imageUrl: require('../assets/vxrail.png')
     }
   },
@@ -30,29 +30,38 @@ export default {
   methods: {
     greet: function (event) {
       if (event) {
-        if (this.site_num.length === 5) {
-          this.site_string = 'WS02.' + this.site_num
-          this.$http.post('http://127.0.0.1:12076/powercubicle/v1/seat/encrypt', {'seat_number': this.site_string}, {emulateJSON: true}).then(function (res) {
-            this.encrypt_data = res.body.msg
-            console.log(this.encrypt_data)
-          }, function (res) {
-            console.log(res.status)
+        if (this.site_num.length === 10) {
+          this.site_string = this.site_num
+          this.$http({
+            url: '/api/powercubicle/v1/seat/encrypt',
+            method: 'POST',
+            data: {
+              seat_number: this.site_string
+            },
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then(function (res) {
+            this.encrypt_data = res.body
+            console.log(res.body)
+          }, function (error) {
+            console.log(error.body)
           })
-          alert(this.encrypt_data)
+
           this.result = '已生成可扫描二维码'
-          this.qr_value = this.encrypt_data
+
           this.code_show = 1
         } else {
           this.result = '未生成有效二维码'
           this.code_show = 0
           this.qr_value = 'test'
-          alert('Please input 5 characters!')
+          alert('Please input 10 characters!')
         }
       }
     },
     clean: function (event) {
       if (event) {
-        this.site_num = ''
+        this.site_num = 'WS02.'
         this.result = '未生成有效二维码'
         this.code_show = 0
         this.qr_value = 'test'
@@ -64,8 +73,7 @@ export default {
       if (this.encrypt_data === '') {
         return
       }
-      alert(this.encrypt_data)
-      this.encrypt_data = ''
+      this.qr_value = ((this.encrypt_data).split('=')).slice(-1)[0]
     }
   }
 }

@@ -4,6 +4,14 @@
   "description": "y",
   "author": "y",
   "private": true,
+  "rules": {
+    "generator-star-spacing": "off",
+    "no-tabs": "off",
+    "no-unused-vars": "off",
+    "no-console": "off",
+    "no-irregular-whitespace": "off",
+    "no-debugger": "off"
+  },
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
@@ -16,8 +24,8 @@
     "qrcodejs2": "0.0.2",
     "vue": "^2.5.2",
     "vue-qr": "^2.3.0",
-    "vue-router": "^3.0.1",
-    "vue-resource": "^1.5.1"
+    "vue-resource": "^1.5.1",
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

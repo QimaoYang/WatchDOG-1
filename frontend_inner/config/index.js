@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
-    host: '10.124.108.253', // can be overwritten by process.env.HOST
+    host: 'localhost', // can be overwritten by process.env.HOST
     port: 3000, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -27,6 +27,16 @@ module.exports = {
     // If true, eslint errors and warnings will also be shown in the error overlay
     // in the browser.
     showEslintErrorsInOverlay: false,
+
+    proxyTable:{
+        '/api':{
+            target: 'http://127.0.0.1:12076/',
+            changeOrigin: true,
+            pathRewrite:{
+                '/api': ''
+            }
+        }
+    },
 
     /**
      * Source Maps
