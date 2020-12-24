@@ -67,7 +67,7 @@ class getAvailable(Resource):
 
             exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.user_id == user.id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now()).first()
             if exists_result:
-                exists_result.release_time = datetime.now().time()
+                exists_result.release_time = datetime.now()
                 db.session.commit()
                 db.session.refresh(exists_result)
                 return exists_result.id, 200
