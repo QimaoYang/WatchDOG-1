@@ -17,7 +17,7 @@ class Config():
 
     # set token secret key
     JWT_SECRET_KEY = "minatoaqua"
-    JWT_EXPIRATION_DELTA = timedelta(seconds=1800)
+    JWT_EXPIRATION_DELTA = timedelta(hours=24)
     JWT_BLACKLIST_ENABLED = True
     JWT_BLACKLIST_TOKEN_CHECKS = ['access', 'refresh']
 
