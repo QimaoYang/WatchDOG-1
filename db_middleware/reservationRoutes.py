@@ -24,7 +24,7 @@ api = Namespace('Reservation', description='Reservation')
 class getAvailable(Resource):
     @api.doc(description="Get all available seats")
     def get(self):
-        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now().time()).all()
+        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now()).all()
         resv = [x[0] for x in resv]
         print(resv)
         query = db.session.query(Seat).filter(Seat.id.notin_(resv)).all()
@@ -35,7 +35,7 @@ class getAvailable(Resource):
 class getAvailable(Resource):
     @api.doc(description="Get all available seats filter by area")
     def get(self, aid):
-        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now().time()).all()
+        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now()).all()
         query = db.session.query(Seat).filter(Seat.aid == aid).filter(Seat.id.notin_([x[0] for x in resv])).all()
         return [jsontifySeat(s) for s in query], 200
 
@@ -44,7 +44,7 @@ class getAvailable(Resource):
 class getAvailable(Resource):
     @api.doc(description="Get all available seat count filter by area")
     def get(self, aid):
-        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now().time()).all()
+        resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now()).all()
         query = db.session.query(Seat).filter(Seat.aid == aid).filter(Seat.id.notin_([x[0] for x in resv])).count()
         available = db.session.query(Seat).filter(Seat.aid == aid).count()
         return {
@@ -65,7 +65,7 @@ class getAvailable(Resource):
             current_user = get_jwt_identity()
             user = User.query.filter_by(username=current_user).first()
 
-            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.user_id == user.id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now().time()).first()
+            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.user_id == user.id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now()).first()
             if exists_result:
                 exists_result.release_time = datetime.now().time()
                 db.session.commit()
@@ -102,7 +102,7 @@ class getAvailable(Resource):
                 return {"message": "No such seat"}, 400
             reservations.seat_id = s.id
 
-            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.seat_id == s.id).filter(Reservation.date == date.today()).filter(Reservation.release_time <= datetime.now().time()).first()
+            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.seat_id == s.id).filter(Reservation.date == date.today()).filter(Reservation.release_time <= datetime.now()).first()
             if not exists_result:
                 db.session.add(reservations)
                 db.session.commit()
@@ -124,7 +124,7 @@ class getAvailable(Resource):
             user = User.query.filter_by(username=current_user).first()
 
             exists_result = db.session.query(Reservation).with_lockmode("update").filter(
-                Reservation.user_id == user.id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now().time()).first()
+                Reservation.user_id == user.id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now()).first()
             if exists_result:
                 s = db.session.query(Seat).filter(Seat.id == exists_result.seat_id).first()
                 return {
