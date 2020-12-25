@@ -67,7 +67,7 @@ class getAvailable(Resource):
 
             exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.user_id == user.id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now()).first()
             if exists_result:
-                exists_result.release_time = datetime.now().time()
+                exists_result.release_time = datetime.now()
                 db.session.commit()
                 db.session.refresh(exists_result)
                 return exists_result.id, 200
@@ -101,8 +101,7 @@ class getAvailable(Resource):
             if not s:
                 return {"message": "No such seat"}, 400
             reservations.seat_id = s.id
-
-            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.seat_id == s.id).filter(Reservation.date == date.today()).filter(Reservation.release_time <= datetime.now()).first()
+            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.seat_id == s.id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now()).order_by(Reservation.created).first()
             if not exists_result:
                 db.session.add(reservations)
                 db.session.commit()
