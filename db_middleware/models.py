@@ -16,6 +16,7 @@ class User(db.Model):
     name = db.Column(Text)
     _password = db.Column('password', db.String(128), nullable=False)
     username = db.Column(db.String(512),unique=True)
+    team = db.Column(db.String)
 
     @property
     def password(self):
@@ -41,6 +42,9 @@ class Seat(db.Model):
     seatCode = db.Column(Text)
     aid = db.Column(db.Integer, ForeignKey('areas.id'))
     type = db.Column(String(20))
+    team = db.Column(db.String, default="public")
+
+
 
 
 class Reservation(db.Model):

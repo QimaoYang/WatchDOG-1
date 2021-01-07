@@ -20,6 +20,7 @@ api: Api = Api(
     title='kic2',
     version='1.0',
     description='v1.0',
+    prefix='/powercubicle'
 )
 app = Flask(__name__)
 #set key
