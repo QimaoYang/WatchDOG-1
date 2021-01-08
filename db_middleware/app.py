@@ -56,4 +56,4 @@ if __name__ == '__main__':
     api.add_namespace(ns2)
 
     #run backend server at port 5001
-    app.run(port=5001)
+    app.run(host="0.0.0.0",port=5001)
