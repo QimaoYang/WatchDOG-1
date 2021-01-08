@@ -28,7 +28,7 @@ func decryptDES(src []byte, key []byte) string {
 func DecryptCode(encryp_text string) string {
 	exPath, _ := os.Getwd()
 	fmt.Println("expath: ", exPath)
-	file, err := os.Open(exPath + "/" + "management/key.txt")
+	file, err := os.Open(exPath + "/management/key.txt")
 	// file, err := os.Open(exPath + "/" + "key.txt")
 	if err != nil {
 		panic(err)
@@ -41,8 +41,8 @@ func DecryptCode(encryp_text string) string {
 	fmt.Println(decodedStr)
 	decrypt_text := decryptDES(decodedStr, key)
 	fmt.Println(decrypt_text)
-	seat_number := decrypt_text[:10]
-	time := decrypt_text[10:]
+	seat_number := decrypt_text[:5]
+	time := decrypt_text[5:]
 	fmt.Println(seat_number)
 	fmt.Println(time)
 	return seat_number
