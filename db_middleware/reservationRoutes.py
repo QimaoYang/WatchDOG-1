@@ -7,6 +7,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 import json
 from flask import request
 from forms import *
+from sqlalchemy import or_
 
 
 def jsontifySeat(seat):
@@ -39,7 +40,7 @@ class getAvailable(Resource):
             seatcode = db.session.query(Area).filter(Area.name == region).first()
             if seatcode:
                 aid = seatcode.id
-                resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(
+                resv = db.session.query(Reservation.seat_id).filter(
                     Reservation.release_time >= datetime.now()).all()
                 query = db.session.query(Seat).filter(Seat.aid == aid).all()
                 return {
@@ -56,7 +57,7 @@ class getAvailable(Resource):
             for r in seatcode:
                 tmp = {}
                 aid = r.id
-                resv = db.session.query(Reservation.seat_id).filter(Reservation.date == date.today()).filter(
+                resv = db.session.query(Reservation.seat_id).filter(
                     Reservation.release_time >= datetime.now()).all()
                 query = db.session.query(Seat).filter(Seat.aid == aid).filter(
                     Seat.id.notin_([x[0] for x in resv])).count()
@@ -111,7 +112,7 @@ class getAvailable(Resource):
             current_user = get_jwt_identity()
             user = User.query.filter_by(username=current_user).first()
 
-            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.user_id == user.id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now()).first()
+            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.user_id == user.id).filter(Reservation.release_time >= datetime.now()).first()
             if exists_result:
                 exists_result.release_time = datetime.now()
                 #exists_result.end_time = datetime.now()
@@ -144,12 +145,13 @@ class getAvailable(Resource):
 
             reservations.user_id = user.id
 
-            s = db.session.query(Seat).filter(Seat.seatCode == r["seat_code"]).first()
+            s = db.session.query(Seat).filter(Seat.seatCode == r["seat_code"]).filter(or_(Seat.team == "public", Seat.team == user.team)).first()
             #s = db.session.query(Seat).filter(Seat.seatCode == r["seat_code"]).filter(Seat.team == user.team).first()
             if not s:
                 return {"message": "No such seat"}, 400
             reservations.seat_id = s.id
-            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.seat_id == s.id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now()).order_by(Reservation.created).first()
+
+            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.seat_id == s.id).filter(Reservation.release_time >= datetime.now()).order_by(Reservation.created).first()
             if not exists_result:
                 db.session.add(reservations)
                 db.session.commit()
@@ -171,7 +173,7 @@ class getAvailable(Resource):
             user = User.query.filter_by(username=current_user).first()
 
             exists_result = db.session.query(Reservation).with_lockmode("update").filter(
-                Reservation.user_id == user.id).filter(Reservation.date == date.today()).filter(Reservation.release_time >= datetime.now()).first()
+                Reservation.user_id == user.id).filter(Reservation.release_time >= datetime.now()).first()
             if exists_result:
                 s = db.session.query(Seat).filter(Seat.id == exists_result.seat_id).first()
                 return {
