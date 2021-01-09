@@ -20,6 +20,7 @@ api: Api = Api(
     title='kic2',
     version='1.0',
     description='v1.0',
+    prefix='/powercubicle'
 )
 app = Flask(__name__)
 #set key
@@ -55,4 +56,4 @@ if __name__ == '__main__':
     api.add_namespace(ns2)
 
     #run backend server at port 5001
-    app.run(port=5001)
+    app.run(host="0.0.0.0",port=5001)

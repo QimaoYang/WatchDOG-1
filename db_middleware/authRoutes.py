@@ -11,7 +11,7 @@ from flask_restplus import Resource, Namespace
 from forms import *
 from datetime import timedelta
 from models import *
-from flask_jwt_extended import  create_access_token, create_refresh_token, get_jti, get_jwt_identity, jwt_required, get_raw_jwt,jwt_refresh_token_required
+from flask_jwt_extended import create_access_token, create_refresh_token, get_jti, get_jwt_identity, jwt_required, get_raw_jwt,jwt_refresh_token_required
 
 # set ACCESS TOKEN EXPIRES TIME
 ACCESS_EXPIRES = timedelta(days=1)
@@ -19,7 +19,7 @@ REFRESH_EXPIRES = timedelta(days=30)
 
 
 # init api namespace
-api = Namespace('Auth', description='Auth operations')
+api = Namespace('', description='Auth operations')
 resource_fields = api.model('login_form', login_form)
 
 
@@ -52,9 +52,7 @@ class Login(Resource):
 
         # return tokens
         return {
-                   'access_token': access_token,
-                   'refresh_token': refresh_token,
-                   'uid': user.id
+                   'session_key': access_token
                }, 200
 
 
@@ -71,7 +69,8 @@ class Reg(Resource):
             print(json.loads(request_body))
             username = json.loads(request_body)["username"]
             password = json.loads(request_body)["password"]
-            name = json.loads(request_body)["name"]
+            #name = json.loads(request_body)["name"]
+            #team = json.loads(request_body)["team"]
         except:
             return {"message": "wrong payload"}, 400
         # check if username already in database(it should be unique)
@@ -83,21 +82,20 @@ class Reg(Resource):
         new_user = User()
         new_user.username = username
         new_user.password = password
-        new_user.name = name
+        #new_user.name = name
+        #new_user.team = team
 
         # gen token
         access_token = create_access_token(identity=json.loads(request_body)["username"])
         refresh_token = create_refresh_token(identity=json.loads(request_body)["username"])
-        #access_jti = get_jti(encoded_token=access_token)
-        #refresh_jti = get_jti(encoded_token=refresh_token)
+
         try:
             # commit new user to database
             db.session.add(new_user)
             db.session.commit()
         except:
             return {"message": "cannot connect to db"}, 400
-        return {'access_token': access_token,
-                'refresh_token': refresh_token}, 201
+        return {'session_key': access_token}, 201
 
 #log out function
 class LogOut(Resource):
@@ -142,8 +140,10 @@ class refresh(Resource):
 
 
 #bind api to routes
-api.add_resource(Reg, '/signup')
-api.add_resource(Login, '/login')
-api.add_resource(LogOut, '/logout')
-api.add_resource(changePassword, '/password')
-api.add_resource(refresh, '/refresh')
+api.add_resource(Reg, '/v1/db/user/register')
+#api.add_resource(Reg, '/signup')
+#api.add_resource(Login, '/login')
+api.add_resource(Login, '/v1/db/user/login')
+#api.add_resource(LogOut, '/logout')
+#api.add_resource(changePassword, '/password')
+#api.add_resource(refresh, '/refresh')
