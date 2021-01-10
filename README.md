@@ -62,8 +62,8 @@ __3.user register__
 ```
 request body(JSON):
 {
-    "user_name":string,
-    "user_password":string
+    "name":string,
+    "password":string
 }
 ```
 ```
@@ -71,7 +71,7 @@ response:
 status code: 201
 response body{JSON}:
 {
-    "session_key":string
+    "Session_key":string
 }
 ``` 
 __4.user login__ 
@@ -80,8 +80,8 @@ __4.user login__
 ```
 request body(JSON):
 {
-    "user_name":string,
-    "user_password":string
+    "name":string,
+    "password":string
 }
 ```
 ```
@@ -89,7 +89,7 @@ response:
 status code: 201
 response body{JSON}:
 {
-    "session_key":string,
+    "Session_key":string,
 }
 ``` 
 __5.seat register__ 
