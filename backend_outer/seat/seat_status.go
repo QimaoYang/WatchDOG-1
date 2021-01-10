@@ -2,55 +2,115 @@ package seat
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
+	"time"
 )
 
 type seatStatus struct {
-	Seats []map[string]int `json:"seats"`
+	Data struct {
+		Seat []map[string]int `json : "seat"`
+	} `json : "data"`
+}
+
+type regionSeats struct {
+	Data struct {
+		Seat []map[string]string `json : "seat"`
+	} `json : "data"`
 }
 
 func RetrieveAllSeatStatus(w http.ResponseWriter, r *http.Request) {
 	v1 := r.URL.Query()
 	if reg, ok := v1["region"]; ok {
-		retrieveRegionSeatStatus(w, r, reg)
+		retrieveRegionStatus(w, r, reg[0])
 	} else {
-		s := []string{"1", "2", "3"}
-		retrieveRegionSeatStatus(w, r, s)
+		retrieveOverallStatus(w, r)
 	}
 }
 
-func retrieveRegionSeatStatus(w http.ResponseWriter, r *http.Request, selectedRegion []string) {
-	seatInfo := []map[string]int{}
-	for _, v := range selectedRegion {
-		fmt.Println(v)
-		response, err := http.Get(strings.Join([]string{"http://localhost:5001/Reservation/available", v, "count"}, "/"))
+func retrieveOverallStatus(w http.ResponseWriter, r *http.Request) {
+	urlSeats := "http://localhost:5001/powercubicle/v1/db/seat"
 
-		if err != nil {
-			fmt.Print(err.Error())
-		}
-
-		responseData, err := ioutil.ReadAll(response.Body)
-
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		var responseObject map[string]int
-		errJson := json.Unmarshal(responseData, &responseObject)
-		if errJson != nil {
-			fmt.Println(errJson)
-		}
-
-		fmt.Println(string(responseData))
-		fmt.Println(responseObject)
-		seatInfo = append(seatInfo, map[string]int{v: responseObject["available"]})
+	cubeClient := http.Client{
+		Timeout: time.Second * 5, // Timeout after 2 seconds
 	}
-	fmt.Println(seatInfo)
-	m := seatStatus{Seats: seatInfo}
-	fmt.Println(m)
-	json.NewEncoder(w).Encode(m)
+
+	req, err := http.NewRequest(http.MethodGet, urlSeats, nil)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	res, getErr := cubeClient.Do(req)
+
+	if getErr != nil {
+		log.Fatal(getErr)
+	}
+
+	if res.Body != nil {
+		defer res.Body.Close()
+	}
+
+	body, readErr := ioutil.ReadAll(res.Body)
+
+	if readErr != nil {
+		log.Fatal(readErr)
+	}
+
+	seatInfo := seatStatus{}
+
+	jsonErr := json.Unmarshal(body, &seatInfo)
+
+	if jsonErr != nil {
+		log.Fatal(jsonErr)
+	}
+
+	// need further logic handler
+	log.Printf("[watch dog] The overall seats info is %v", seatInfo)
+	json.NewEncoder(w).Encode(seatInfo)
+}
+
+func retrieveRegionStatus(w http.ResponseWriter, r *http.Request, region string) {
+	urlSeats := "http://localhost:5001/powercubicle/v1/db/seat"
+	urlRegionSeats := strings.Join([]string{urlSeats, "?region=", region}, "")
+	cubeClient := http.Client{
+		Timeout: time.Second * 5, // Timeout after 2 seconds
+	}
+
+	req, err := http.NewRequest(http.MethodGet, urlRegionSeats, nil)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	res, getErr := cubeClient.Do(req)
+
+	if getErr != nil {
+		log.Fatal(getErr)
+	}
+
+	if res.Body != nil {
+		defer res.Body.Close()
+	}
+
+	body, readErr := ioutil.ReadAll(res.Body)
+
+	if readErr != nil {
+		log.Fatal(readErr)
+	}
+
+	seatInfo := regionSeats{}
+
+	jsonErr := json.Unmarshal(body, &seatInfo)
+
+	if jsonErr != nil {
+		log.Fatal(jsonErr)
+	}
+
+	// need further logic handler
+	log.Printf("[watch dog] The region %s seats info is %v", region, seatInfo)
+
+	json.NewEncoder(w).Encode(seatInfo)
 }
