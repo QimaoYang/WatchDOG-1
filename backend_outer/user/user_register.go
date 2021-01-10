@@ -3,7 +3,6 @@ package user
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -54,7 +53,7 @@ func getSessionKey(w http.ResponseWriter, r *http.Request, userRegisterInfo *use
 		log.Fatal(jsonErr)
 	}
 
-	fmt.Printf("User info is %v", userStat)
+	log.Printf("User info is %v", userStat)
 	cubeClient := http.Client{
 		Timeout: time.Second * 5, // Timeout after 5 seconds
 	}
