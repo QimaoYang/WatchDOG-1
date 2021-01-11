@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/ChrisLi03/WatchDOG/backend_outer/management"
@@ -27,8 +28,8 @@ func SeatRegister(w http.ResponseWriter, r *http.Request) {
 	}
 
 	seatCode := management.DecryptCode(p.Encryted)
-	res := map[string]string{"seat_number": seatCode}
-	json.NewEncoder(w).Encode(res)
+	// res := map[string]string{"seat_number": seatCode}
+	// json.NewEncoder(w).Encode(res)
 	fmt.Println(seatCode)
 	fmt.Println("Endpoint Hit: SeatRegister")
 	registSeat(w, r, seatCode, seatSessionKey)
@@ -37,7 +38,8 @@ func SeatRegister(w http.ResponseWriter, r *http.Request) {
 func registSeat(w http.ResponseWriter, r *http.Request, seatNumber string, sessionAuth string) {
 	urlUserRegister := "http://localhost:5001/powercubicle/v1/db/seat/register"
 
-	seatNumber = "02005"
+	// seatNumber = "02005"
+	seatNumber = strings.TrimPrefix(seatNumber, "WS02.")
 	seatCode := map[string]string{
 		"seat_code": seatNumber,
 	}
@@ -65,4 +67,7 @@ func registSeat(w http.ResponseWriter, r *http.Request, seatNumber string, sessi
 	if getErr != nil {
 		log.Fatal(getErr)
 	}
+
+	res := map[string]string{"seat_number": seatNumber}
+	json.NewEncoder(w).Encode(res)
 }
