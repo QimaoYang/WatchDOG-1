@@ -146,7 +146,6 @@ class getAvailable(Resource):
             reservations.user_id = user.id
 
             s = db.session.query(Seat).filter(Seat.seatCode == r["seat_code"]).filter(or_(Seat.team == "public", Seat.team == user.team)).first()
-            #s = db.session.query(Seat).filter(Seat.seatCode == r["seat_code"]).filter(Seat.team == user.team).first()
             if not s:
                 return {"message": "No such seat"}, 400
             reservations.seat_id = s.id
