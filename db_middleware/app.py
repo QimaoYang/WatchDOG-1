@@ -24,7 +24,6 @@ api: Api = Api(
 )
 app = Flask(__name__)
 #set key
-app.config["SECRET_KEY"] = '765 PRODUCTION'
 app.config.from_object(Config)
 api.init_app(app)
 
