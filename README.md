@@ -15,8 +15,9 @@ response:
 status code: 201
 response body{JSON}:
 {
-    "ipAddr": string
-    "encryp_text":string
+    "encryp_text": string,
+    "ipAddr": string,
+    "msg": string,
 }
 ``` 
 ### backend_outer

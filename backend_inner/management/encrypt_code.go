@@ -31,11 +31,13 @@ func encryptDES(src []byte, key []byte) []byte {
 }
 
 func EncryptCode(w http.ResponseWriter, r *http.Request) {
-	var ipAddr string
 	var encryp_str string
+	var msg string
+	ipAddr := GetIP(r)
 
 	if !IpFilter(r) {
-		ipAddr = "true"
+		msg = "true"
+
 		r.ParseForm()
 		exPath, _ := os.Getwd()
 		fmt.Println("expath: ", exPath)
@@ -47,24 +49,24 @@ func EncryptCode(w http.ResponseWriter, r *http.Request) {
 		defer file.Close()
 		key, err := ioutil.ReadAll(file)
 
-		// seat_number := "02128"
 		seat_number := r.PostFormValue("seat_number")
 		currentTime := time.Now().Format("2006-01-02 15:04:05")
 		cipher_text := []byte(seat_number + currentTime)
 		fmt.Println(string(cipher_text))
 		encryp_text := encryptDES(cipher_text, key)
-		fmt.Println(encryp_text)
+		// fmt.Println(encryp_text)
 
 		encryp_str = hex.EncodeToString(encryp_text)
-		fmt.Println("byte convert str:", encryp_str)
+		fmt.Println("encryp_text:", encryp_str)
 	} else {
-		ipAddr = "false"
+		msg = "false"
 	}
 
 	w.Header().Add("Content-Type", "application/json")
 	resp, _ := json.Marshal(map[string]string{
-		"ipAddr":      ipAddr,
 		"encryp_text": encryp_str,
+		"ipAddr":      ipAddr,
+		"msg":         msg,
 	})
 	w.Write(resp)
 }

@@ -36,7 +36,6 @@ func DecryptCode(encryp_text string) string {
 	defer file.Close()
 	key, err := ioutil.ReadAll(file)
 
-	// encryp_text := "cd931ef9439e966addb0fce74b28b1ebcdd57088f9a85be37b3beaadd845249f"
 	decodedStr, err := hex.DecodeString(encryp_text)
 	fmt.Println(decodedStr)
 	decrypt_text := decryptDES(decodedStr, key)

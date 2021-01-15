@@ -11,15 +11,17 @@ func IpFilter(r *http.Request) bool {
 	client_ip := GetIP(r)
 	fmt.Println("get ip: ", client_ip)
 
-	return BlockAddr(net.ParseIP(client_ip))
+	// return BlockAddr(net.ParseIP(client_ip))
 
-	// vpn_pool := []string{"10.84.192.0/19", "10.84.160.0/20", "10.84.224.0/19", "10.84.176.0/20"}
-	// for _, network := range vpn_pool {
-	// 	if network.Contains(net.ParseIP(client_ip)) {
-	// 		return true
-	// 	}
-	// }
-	// return false
+	vpn_pool := []string{"10.84.192.0/19", "10.84.160.0/20", "10.84.224.0/19", "10.84.176.0/20"}
+	ip := net.ParseIP(client_ip)
+	for i := 0; i < len(vpn_pool); i++ {
+		_, ipnet, _ := net.ParseCIDR(vpn_pool[i])
+		if ipnet.Contains(ip) {
+			return true
+		}
+	}
+	return false
 }
 
 // GetIP gets a requests IP address by reading off the forwarded-for
@@ -39,5 +41,5 @@ func BlockAddr(ip net.IP) bool {
 	}
 
 	return ip4[0] == 10 && ip4[1] == 84 &&
-		(ip4[2] == 192 || ip4[2] == 160 || ip4[2] == 224 || ip4[2] == 176)
+		(ip4[2] >= 160 && ip4[2] <= 255)
 }
