@@ -8,7 +8,7 @@
         <input v-model="userpwd" type="password">
         <br>
         <button v-on:click="userLogin">登录</button>
-        <button>注册</button>
+        <button v-on:click="gotoRegis">注册</button>
     </div>
 </template>
 <script>
@@ -45,6 +45,11 @@ export default {
         }, err => {
           console.log(err)
         })
+    },
+    gotoRegis: function () {
+      this.$router.push({
+        path: '/userregis'
+      })
     }
   }
 }

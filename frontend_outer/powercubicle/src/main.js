@@ -4,8 +4,9 @@ import router from './router'
 import 'amfe-flexible'
 import './assets/stylus/reset.styl'
 import { post, get, patch, put } from './http'
-import { getSeatSitu, getSeatNum, usrLogin, usrRegis } from './sqlserver'
+import { getSeatSitu, getSeatNum, usrLogin, usrRegis, getCurrentSeat, seatRelease, seatRegis } from './sqlserver'
 import Vconsole from 'vconsole'
+import Mint from 'mint-ui'
 var VueTouch = require('vue-touch')
 Vue.config.productionTip = false
 if (process.env.NODE_ENV === 'development') {
@@ -13,6 +14,7 @@ if (process.env.NODE_ENV === 'development') {
   let vConsole = new Vconsole()
 }
 Vue.use(VueTouch, { name: 'v-touch' })
+Vue.use(Mint)
 // 定义全局变量
 Vue.prototype.$post = post
 Vue.prototype.$get = get
@@ -20,6 +22,9 @@ Vue.prototype.$patch = patch
 Vue.prototype.$put = put
 Vue.prototype.$getSeatSitu = getSeatSitu
 Vue.prototype.$getSeatNum = getSeatNum
+Vue.prototype.$getCurrentSeat = getCurrentSeat
+Vue.prototype.$seatRelease = seatRelease
+Vue.prototype.$seatRegis = seatRegis
 Vue.prototype.$usrLogin = usrLogin
 Vue.prototype.$usrRegis = usrRegis
 Vue.prototype.$isLogged = false

@@ -1,8 +1,5 @@
 <template>
     <div class="activity-area" :style="{ width:seatAreaWidthRem + 'rem',height:seatAreaHeightRem + 'rem'}">
-      <div class="screen">
-        <div class="screen-text">屏幕方向</div>
-      </div>
       <div class="thumbnail" v-show="thumbnailShow" :style="{ transform: 'scale('+seatScale+')',width:thumbnailWidthRem + 'rem',height:thumbnailHeighthRem + 'rem'}">
         <!--红色外框开始-->
         <div class="thumbnail-border" :style="{transform: 'scale('+scalereciprocal+')',top:topthumbnail + 'rem',left:leftthumbnail + 'rem'}">
@@ -19,6 +16,10 @@
           <!--所有可以点击座位的数据会放入此插槽,此插槽可以缩放,拖动-->
         </slot>
       </v-touch>
+      <div :class="areaId">
+        <div v-if="areaId==='areaB'" class="screen-text">电梯间</div>
+        <div v-else class="screen-text">进门</div>
+      </div>
     </div>
 </template>
 <script>
@@ -35,7 +36,8 @@ export default {
     propMiddleLine: Number,
     propHorizontalLine: Number,
     propSeatBoxHeight: Number,
-    propSeatToolArr: Array
+    propSeatToolArr: Array,
+    propAreaId: String
   },
   data: function () {
     return {
@@ -71,7 +73,8 @@ export default {
       // 触摸状态
       touchStatus: false,
       // 座位左边栏的数组
-      seatToolArr: this.propSeatToolArr
+      seatToolArr: this.propSeatToolArr,
+      areaId: 'area' + this.propAreaId
     }
   },
   methods: {
@@ -279,11 +282,45 @@ export default {
         height 100%
         padding 1px
         border-2px(red,0)
-    .screen
-      width: 630px
+    .areaA
+      width: 100px
+      border-bottom 42px solid #DFDFDF
+      border-right 30px solid transparent
+      border-left 30px solid transparent
+      color white
+      position absolute
+      bottom 0px
+      z-index 2
+      left 50%
+      transform translateX(-50%);
+      .screen-text
+        text-align center
+        white-space nowrap;
+        font-size 34px;
+        font-weight 600;
+        margin-bottom:-50px;
+    .areaB
+      width: 100px
+      border-bottom 42px solid #DFDFDF
+      border-right 30px solid transparent
+      border-left 30px solid transparent
+      color white
+      position absolute
+      bottom 0px
+      z-index 2
+      left 50%
+      transform translateX(-50%);
+      .screen-text
+        text-align center
+        white-space nowrap;
+        font-size 34px;
+        font-weight 600;
+        margin-bottom:-50px;
+    .areaC
+      width: 100px
       border-top 42px solid #DFDFDF
-      border-right 60px solid transparent
-      border-left 60px solid transparent
+      border-right 30px solid transparent
+      border-left 30px solid transparent
       color white
       position absolute
       top 0px

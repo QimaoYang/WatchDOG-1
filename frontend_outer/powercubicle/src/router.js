@@ -4,6 +4,7 @@ import HallSeat from '@/pages/hallseat/HallSeat'
 import Index from '@/pages/index/Index'
 import UserLogin from '@/pages/userlogin/UserLogin'
 import UserRegis from '@/pages/userregis/UserRegis'
+import UserInfo from '@/pages/userinfo/UserInfo'
 Vue.use(Router)
 
 export default new Router({
@@ -29,6 +30,11 @@ export default new Router({
       path: '/userregis',
       name: 'UserRegis',
       component: UserRegis
+    },
+    {
+      path: '/userinfo',
+      name: 'UserInfo',
+      component: UserInfo
     }
   ]
 })

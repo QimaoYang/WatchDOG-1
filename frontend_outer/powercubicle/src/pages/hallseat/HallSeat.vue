@@ -4,7 +4,7 @@
     <seat-area :propThumbnailAreaWidth="thumbnailBoxWidth" :propThumbnailAreaHeight="thumbnailBoxHeight"
     :propYMax="yMax" :propSeatScale="seatScale" :propSeatHeight="positionDistin" :propSeatToolArr="seatToolArr"
     :propSeatAreaWidthRem="seatAreaWidthRem" :propSeatAreaHeightRem ="seatAreaHeightRem"
-    :propSeatBoxHeight="seatBoxHeight" :propMiddleLine="middleLine" :propHorizontalLine="horizontalLine" ref="seatArea">
+    :propSeatBoxHeight="seatBoxHeight" :propMiddleLine="middleLine" :propHorizontalLine="horizontalLine" :propAreaId="areaId" ref="seatArea">
       <!--以下为缩略座位图具名插槽 开始-->
       <template slot="thumbnail-seat-solt">
          <template v-for="seatItem in seatList" >
@@ -51,7 +51,7 @@ export default {
       seatAreaWidthRem: 10, // 座位区域横向rem最大值 用于和 seatAreaHeightRem 共同计算区域缩放比例
       load: false, // 加载dom的控制
       resSeatInfo: [],
-      areaId: 'A'
+      areaId: ''
     }
   },
   components: {
