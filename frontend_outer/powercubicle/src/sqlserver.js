@@ -7,6 +7,7 @@ axios.defaults.baseURL = ''
 const BACKENDHOST = 'http://192.168.31.108:12077'
 const TOKEN = 'PCSessionToken'
 const USERNAME = 'PCUserName'
+const USERSEAT = 'PCUserSeat'
 // const querystring = require('querystring')
 const SUCCESS = 'SUCCESS'
 const ERROR = 'ERROR'
@@ -15,24 +16,6 @@ const NAMEERROR = 'NAMEERROR'
 const PWDERROR = 'PWDERROR'
 // const RESERVED = 'RESERVED'
 // const FORMATERROR = 'FORMATERROR'
-// http request 拦截器
-axios.interceptors.request.use(
-  config => {
-    // const token = getCookie('名称');注意使用的时候需要引入cookie方法，推荐js-cookie
-    // config.data = JSON.stringify(config.data)
-    // config.data = JSON.stringify(config.data)
-    // config.headers = {
-    // 'Content-Type': 'application/x-www-form-urlencoded'
-    // 'Content-Type': 'application/json;charset=UTF-8'
-    // }
-    // if(token){
-    //   config.params = {'token':token}
-    // }
-    return config
-  }, err => {
-    return Promise.reject(err)
-  }
-)
 
 /**
  * 封装get方法
@@ -74,14 +57,24 @@ export function getSeatSitu (loc) {
 
 export function getCurrentSeat () {
   return new Promise((resolve, reject) => {
-    axios.get(BACKENDHOST + '/Reservation/user/seat', {
-      header: {
-        'Authorization': 'Bearer ' + getCookie(TOKEN),
-        'content-type': 'application/json'
+    axios.get(BACKENDHOST + '/powercubicle/v1/user/seat',
+      {
+        headers: {
+          'Authorization': 'Bearer ' + getCookie(TOKEN)
+        }
       }
-    }).then(response => {
-      resolve(response.data) // TODO
-    }).catch(err => {
+    ).then(response => {
+      console.log(response)
+      var seatid = response.data.Seat
+      if (seatid !== '') {
+        setCookie(USERSEAT, seatid, 10 * 60 * 60 * 1000)
+        resolve(seatid)
+      } else {
+        console.log(ERROR)
+        resolve(ERROR)
+      }
+    }, err => {
+      console.log(err)
       reject(err)
     })
   })
@@ -178,29 +171,46 @@ export function usrRegis (usrName, usrPwd) {
   })
 }
 
-export function userSeat () {
+export function seatRelease () {
   return new Promise((resolve, reject) => {
-    axios.get(BACKENDHOST + '/powercubicle/v1/user/seat',
+    axios.post(BACKENDHOST + '/powercubicle/v1/seat/release', null,
       {
         headers: {
-          'Authorization': 'Bearer ' + getCookie(TOKEN),
-          'Content-Type': 'application/json'
+          'Authorization': 'Bearer ' + getCookie(TOKEN)
         }
       }
     ).then(response => {
       console.log(response)
-      var token = response.data.Session_key
-      if (typeof (token) !== 'undefined') {
-        setCookie(TOKEN, token, 30 * 24 * 60 * 60 * 1000)
-        setCookie(USERNAME, usrName, 30 * 24 * 60 * 60 * 1000)
+      setCookie(USERSEAT, '', 1000)
+      resolve(SUCCESS)
+    }, err => {
+      console.log(err)
+      reject(err)
+    })
+  })
+}
+
+export function seatRegis (encryCode) {
+  let parseData = {
+    'encrypted_qrcode': encryCode
+  }
+  return new Promise((resolve, reject) => {
+    axios.post(BACKENDHOST + '/powercubicle/v1/seat/register', parseData,
+      {
+        headers: {
+          'Authorization': 'Bearer ' + getCookie(TOKEN),
+          'Content-Type': 'text/plain'
+        }
+      }
+    ).then(response => {
+      console.log(response)
+      if (response.data.seat_number !== '') {
+        setCookie(USERSEAT, response.data.seat_number, 10 * 60 * 60 * 1000)
         this.$router.push({
-          path: '/'
+          path: '/userinfo'
         })
-        resolve(SUCCESS)
-      } else if (response.data.Data.message.indexOf('used') >= 0) {
-        resolve(NAMEDUP)
+        resolve(response.data.seat_number)
       } else {
-        console.log(ERROR)
         resolve(ERROR)
       }
     }, err => {
@@ -209,6 +219,7 @@ export function userSeat () {
     })
   })
 }
+
 /**
  * 封装patch请求
  * @param url
