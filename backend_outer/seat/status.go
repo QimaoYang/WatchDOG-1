@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/ChrisLi03/WatchDOG/backend_outer/common"
 )
 
 type seatStatus struct {
@@ -22,6 +24,11 @@ type regionSeats struct {
 }
 
 func RetrieveAllSeatStatus(w http.ResponseWriter, r *http.Request) {
+	common.SetupCORS(&w, r)
+	if (*r).Method == "OPTIONS" {
+		return
+	}
+
 	v1 := r.URL.Query()
 	if reg, ok := v1["region"]; ok {
 		retrieveRegionStatus(w, r, reg[0])

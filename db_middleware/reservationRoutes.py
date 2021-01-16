@@ -102,7 +102,7 @@ class getAvailable(Resource):
 #                }, 200
 
 
-@api.route('/v1/seat/release')
+@api.route('/v1/db/seat/release')
 class getAvailable(Resource):
     @api.doc(description="Release a reservation")
     @jwt_required

@@ -17,6 +17,7 @@ func handleRequests() {
 	wd_router.HandleFunc("/seat/release", seat.SeatRelease).Methods("POST")
 	wd_router.HandleFunc("/user/login", user.UserLogin).Methods("POST")
 	wd_router.HandleFunc("/user/register", user.UserRegister).Methods("POST")
+	wd_router.HandleFunc("/user/seat", user.UserSeat).Methods("GET")
 
 	err := http.ListenAndServe(":12077", wd_router)
 	if err != nil {

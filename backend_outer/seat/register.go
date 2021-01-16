@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ChrisLi03/WatchDOG/backend_outer/common"
 	"github.com/ChrisLi03/WatchDOG/backend_outer/management"
 )
 
@@ -17,7 +18,12 @@ type QrCode struct {
 }
 
 func SeatRegister(w http.ResponseWriter, r *http.Request) {
-	seatSessionKey := r.Header.Get("Auth")
+	common.SetupCORS(&w, r)
+	if (*r).Method == "OPTIONS" {
+		return
+	}
+
+	seatSessionKey := r.Header.Get("Authorization")
 	log.Println("the seat session key is", seatSessionKey)
 	var p QrCode
 
