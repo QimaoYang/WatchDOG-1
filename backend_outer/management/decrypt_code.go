@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -25,24 +26,32 @@ func decryptDES(src []byte, key []byte) string {
 	return string(src)
 }
 
-func DecryptCode(encryp_text string) string {
+func getKey() []byte {
 	exPath, _ := os.Getwd()
-	fmt.Println("expath: ", exPath)
 	file, err := os.Open(exPath + "/management/key.txt")
-	// file, err := os.Open(exPath + "/" + "key.txt")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	defer file.Close()
-	key, err := ioutil.ReadAll(file)
+	key, readErr := ioutil.ReadAll(file)
+	if readErr != nil {
+		log.Fatal(err)
+	}
+	return key
+}
 
-	decodedStr, err := hex.DecodeString(encryp_text)
+func DecryptCode(encryp_text string) string {
+	// get the key
+	key := getKey()
+
+	decodedStr, _ := hex.DecodeString(encryp_text)
 	fmt.Println(decodedStr)
 	decrypt_text := decryptDES(decodedStr, key)
-	fmt.Println(decrypt_text)
+	log.Println("decrypt_text: " + decrypt_text)
+
 	seat_number := decrypt_text[:5]
 	time := decrypt_text[5:]
-	fmt.Println(seat_number)
-	fmt.Println(time)
+	log.Println("seat_number: " + seat_number)
+	log.Println("time: " + time)
 	return seat_number
 }

@@ -1,7 +1,7 @@
 package management
 
 import (
-	"fmt"
+	"log"
 	"net"
 	"net/http"
 	"strings"
@@ -9,7 +9,7 @@ import (
 
 func IpFilter(r *http.Request) bool {
 	client_ip := GetIP(r)
-	fmt.Println("get ip: ", client_ip)
+	log.Println("get ip: ", client_ip)
 
 	// return BlockAddr(net.ParseIP(client_ip))
 
@@ -28,7 +28,7 @@ func IpFilter(r *http.Request) bool {
 func GetIP(r *http.Request) string {
 	forwarded := r.Header.Get("X-FORWARDED-FOR")
 	if forwarded != "" {
-		fmt.Println("X-FORWARDED-FOR ", forwarded)
+		log.Println("X-FORWARDED-FOR: ", forwarded)
 		return forwarded
 	}
 	return strings.Split(r.RemoteAddr, ":")[0]

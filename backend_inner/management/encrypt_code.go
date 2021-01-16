@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -30,6 +31,22 @@ func encryptDES(src []byte, key []byte) []byte {
 	return src
 }
 
+func getKey() []byte {
+	exPath, _ := os.Getwd()
+	log.Println("expath: ", exPath)
+	// file, err := os.Open(exPath + "/management/key.txt")
+	file, err := os.Open(exPath + "/" + "key.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+	key, readErr := ioutil.ReadAll(file)
+	if readErr != nil {
+		log.Fatal(err)
+	}
+	return key
+}
+
 func EncryptCode(w http.ResponseWriter, r *http.Request) {
 	var encryp_str string
 	var msg string
@@ -38,26 +55,23 @@ func EncryptCode(w http.ResponseWriter, r *http.Request) {
 	if !IpFilter(r) {
 		msg = "true"
 
-		r.ParseForm()
-		exPath, _ := os.Getwd()
-		fmt.Println("expath: ", exPath)
-		file, err := os.Open(exPath + "/management/key.txt")
-		// file, err := os.Open(exPath + "/" + "key.txt")
-		if err != nil {
-			panic(err)
-		}
-		defer file.Close()
-		key, err := ioutil.ReadAll(file)
+		// get the key
+		key := getKey()
 
-		seat_number := r.PostFormValue("seat_number")
+		// get seat_number
+		body := json.NewDecoder(r.Body)
+		var params map[string]string
+		body.Decode(&params)
+		seat_number := params["seat_number"]
+		log.Println("seat_number: " + seat_number)
+
 		currentTime := time.Now().Format("2006-01-02 15:04:05")
 		cipher_text := []byte(seat_number + currentTime)
 		fmt.Println(string(cipher_text))
-		encryp_text := encryptDES(cipher_text, key)
-		// fmt.Println(encryp_text)
 
+		encryp_text := encryptDES(cipher_text, key)
 		encryp_str = hex.EncodeToString(encryp_text)
-		fmt.Println("encryp_text:", encryp_str)
+		log.Println("encryp_text: ", encryp_str)
 	} else {
 		msg = "false"
 	}
