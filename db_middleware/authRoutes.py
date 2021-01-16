@@ -14,7 +14,7 @@ from models import *
 from flask_jwt_extended import create_access_token, create_refresh_token, get_jti, get_jwt_identity, jwt_required, get_raw_jwt,jwt_refresh_token_required
 
 # set ACCESS TOKEN EXPIRES TIME
-ACCESS_EXPIRES = timedelta(days=1)
+ACCESS_EXPIRES = timedelta(days=30)
 REFRESH_EXPIRES = timedelta(days=30)
 
 
@@ -43,12 +43,12 @@ class Login(Resource):
         elif user and not user.check_password(password):
             return {"message": "wrong password"}, 400
         # gen token
-        access_token = create_access_token(identity=json.loads(request_body)["username"])
+        access_token = create_access_token(identity=json.loads(request_body)["username"], expires_delta=timedelta(days=30))
         refresh_token = create_refresh_token(identity=json.loads(request_body)["username"])
 
         # check token
-        access_jti = get_jti(encoded_token=access_token)
-        refresh_jti = get_jti(encoded_token=refresh_token)
+        #access_jti = get_jti(encoded_token=access_token)
+        #refresh_jti = get_jti(encoded_token=refresh_token)
 
         # return tokens
         return {
@@ -86,7 +86,7 @@ class Reg(Resource):
         #new_user.team = team
 
         # gen token
-        access_token = create_access_token(identity=json.loads(request_body)["username"])
+        access_token = create_access_token(identity=json.loads(request_body)["username"], expires_delta=timedelta(days=30))
         refresh_token = create_refresh_token(identity=json.loads(request_body)["username"])
 
         try:
