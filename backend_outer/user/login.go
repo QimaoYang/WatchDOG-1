@@ -3,22 +3,30 @@ package user
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/ChrisLi03/WatchDOG/backend_outer/common"
 )
 
-type userInfo struct {
+type loginInfo struct {
 	Name     string `json : "name"`
 	Password string `json : "password"`
 }
 
-type sessionKey struct {
+type loginSessionKey struct {
 	Session_key string `json : "session_key"`
 }
 
-func UserRegister(w http.ResponseWriter, r *http.Request) {
+func UserLogin(w http.ResponseWriter, r *http.Request) {
+	common.SetupCORS(&w, r)
+	if (*r).Method == "OPTIONS" {
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 
 	body, readErr := ioutil.ReadAll(r.Body)
@@ -27,25 +35,25 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(readErr)
 	}
 
-	UserRegisterInfo := userInfo{}
+	UserLoginInfo := loginInfo{}
 
-	jsonErr := json.Unmarshal(body, &UserRegisterInfo)
+	jsonErr := json.Unmarshal(body, &UserLoginInfo)
 
 	if jsonErr != nil {
 		log.Fatal(jsonErr)
 	}
 
 	// need further logic handler
-	log.Printf("[watch dog] The user register info is %v", UserRegisterInfo)
-	getSessionKey(w, r, &UserRegisterInfo)
+	log.Printf("[watch dog] The user login info is %v", UserLoginInfo)
+	getUserSessionKey(w, r, &UserLoginInfo)
 }
 
-func getSessionKey(w http.ResponseWriter, r *http.Request, userRegisterInfo *userInfo) {
-	urlUserRegister := "http://localhost:5001/powercubicle/v1/db/user/register"
+func getUserSessionKey(w http.ResponseWriter, r *http.Request, userLoginInfo *loginInfo) {
+	urlUserRegister := "http://localhost:5001/powercubicle/v1/db/user/login"
 
 	userStat := map[string]string{
-		"username": userRegisterInfo.Name,
-		"password": userRegisterInfo.Password,
+		"username": userLoginInfo.Name,
+		"password": userLoginInfo.Password,
 	}
 
 	jsonString, jsonErr := json.Marshal(userStat)
@@ -53,7 +61,7 @@ func getSessionKey(w http.ResponseWriter, r *http.Request, userRegisterInfo *use
 		log.Fatal(jsonErr)
 	}
 
-	log.Printf("User info is %v", userStat)
+	fmt.Printf("User info is %v", userStat)
 	cubeClient := http.Client{
 		Timeout: time.Second * 5, // Timeout after 5 seconds
 	}
@@ -80,7 +88,7 @@ func getSessionKey(w http.ResponseWriter, r *http.Request, userRegisterInfo *use
 		log.Fatal(readErr)
 	}
 
-	userSessionKey := sessionKey{}
+	userSessionKey := loginSessionKey{}
 
 	jsonErrSecond := json.Unmarshal(body, &userSessionKey)
 
@@ -89,9 +97,9 @@ func getSessionKey(w http.ResponseWriter, r *http.Request, userRegisterInfo *use
 	}
 
 	// need further logic handler
-	log.Printf("[watch dog] The user register session key is %v", userSessionKey)
+	log.Printf("[watch dog] The user login session key is %v", userSessionKey)
 	if userSessionKey.Session_key == "" {
-		http.Error(w, "Bad request - user already exists!", 400)
+		http.Error(w, "Bad request - wrong username or password", 400)
 	} else {
 		json.NewEncoder(w).Encode(userSessionKey)
 	}
