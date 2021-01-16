@@ -1,0 +1,1484 @@
+{
+  "errorCode": 0,
+  "errorMsg": "",
+  "seatListA": [
+    {
+      "id": "02005",
+      "gRow": 1,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02006",
+      "gRow": 1,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02007",
+      "gRow": 1,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02009",
+      "gRow": 1,
+      "gCol": 12,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02010",
+      "gRow": 1,
+      "gCol": 11,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02011",
+      "gRow": 2,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02012",
+      "gRow": 2,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02013",
+      "gRow": 2,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02018",
+      "gRow": 4,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02019",
+      "gRow": 4,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02020",
+      "gRow": 4,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02021",
+      "gRow": 3,
+      "gCol": 11,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02022",
+      "gRow": 3,
+      "gCol": 12,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02023",
+      "gRow": 4,
+      "gCol": 12,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02024",
+      "gRow": 4,
+      "gCol": 11,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02025",
+      "gRow": 4,
+      "gCol": 10,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02026",
+      "gRow": 5,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02027",
+      "gRow": 5,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02028",
+      "gRow": 5,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02029",
+      "gRow": 5,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02031",
+      "gRow": 5,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02032",
+      "gRow": 5,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02033",
+      "gRow": 7,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02034",
+      "gRow": 7,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02035",
+      "gRow": 7,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02036",
+      "gRow": 7,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02037",
+      "gRow": 7,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02038",
+      "gRow": 7,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02040",
+      "gRow": 6,
+      "gCol": 10,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02041",
+      "gRow": 6,
+      "gCol": 11,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02042",
+      "gRow": 6,
+      "gCol": 12,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02043",
+      "gRow": 8,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02044",
+      "gRow": 8,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02045",
+      "gRow": 8,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02046",
+      "gRow": 8,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02047",
+      "gRow": 8,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02048",
+      "gRow": 8,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02049",
+      "gRow": 11,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02050",
+      "gRow": 11,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02051",
+      "gRow": 11,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02052",
+      "gRow": 11,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02053",
+      "gRow": 11,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02054",
+      "gRow": 11,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02055",
+      "gRow": 11,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02056",
+      "gRow": 12,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02057",
+      "gRow": 12,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02058",
+      "gRow": 12,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02059",
+      "gRow": 12,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02060",
+      "gRow": 12,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02061",
+      "gRow": 12,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02062",
+      "gRow": 12,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02063",
+      "gRow": 14,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02064",
+      "gRow": 14,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02065",
+      "gRow": 14,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02066",
+      "gRow": 14,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02067",
+      "gRow": 14,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02068",
+      "gRow": 14,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02069",
+      "gRow": 14,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    }
+  ],
+  "seatListB": [
+    {
+      "id": "02072",
+      "gRow": 3,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02073",
+      "gRow": 4,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02074",
+      "gRow": 5,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02075",
+      "gRow": 5,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02076",
+      "gRow": 4,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02077",
+      "gRow": 3,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02078",
+      "gRow": 2,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02079",
+      "gRow": 1,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02080",
+      "gRow": 2,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02081",
+      "gRow": 3,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02082",
+      "gRow": 4,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02083",
+      "gRow": 5,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02084",
+      "gRow": 5,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02085",
+      "gRow": 4,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02086",
+      "gRow": 3,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02087",
+      "gRow": 2,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02088",
+      "gRow": 1,
+      "gCol": 6,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02089",
+      "gRow": 1,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02090",
+      "gRow": 2,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02091",
+      "gRow": 3,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02092",
+      "gRow": 4,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02093",
+      "gRow": 5,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02094",
+      "gRow": 5,
+      "gCol": 9,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02095",
+      "gRow": 4,
+      "gCol": 9,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02096",
+      "gRow": 3,
+      "gCol": 9,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02097",
+      "gRow": 2,
+      "gCol": 9,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02098",
+      "gRow": 1,
+      "gCol": 9,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02099",
+      "gRow": 2,
+      "gCol": 10,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02100",
+      "gRow": 3,
+      "gCol": 10,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02101",
+      "gRow": 4,
+      "gCol": 10,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02102",
+      "gRow": 5,
+      "gCol": 10,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02103",
+      "gRow": 5,
+      "gCol": 12,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02104",
+      "gRow": 4,
+      "gCol": 12,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02105",
+      "gRow": 3,
+      "gCol": 12,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02106",
+      "gRow": 2,
+      "gCol": 12,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02107",
+      "gRow": 1,
+      "gCol": 12,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02108",
+      "gRow": 1,
+      "gCol": 13,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02109",
+      "gRow": 2,
+      "gCol": 13,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02110",
+      "gRow": 3,
+      "gCol": 13,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02111",
+      "gRow": 4,
+      "gCol": 13,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02112",
+      "gRow": 5,
+      "gCol": 13,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02113",
+      "gRow": 5,
+      "gCol": 15,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02114",
+      "gRow": 4,
+      "gCol": 15,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02115",
+      "gRow": 3,
+      "gCol": 15,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02116",
+      "gRow": 2,
+      "gCol": 15,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02117",
+      "gRow": 1,
+      "gCol": 15,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02118",
+      "gRow": 2,
+      "gCol": 16,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02119",
+      "gRow": 3,
+      "gCol": 16,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02120",
+      "gRow": 4,
+      "gCol": 16,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02121",
+      "gRow": 5,
+      "gCol": 16,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02122",
+      "gRow": 5,
+      "gCol": 18,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02123",
+      "gRow": 4,
+      "gCol": 18,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02124",
+      "gRow": 3,
+      "gCol": 18,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02125",
+      "gRow": 2,
+      "gCol": 18,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02126",
+      "gRow": 1,
+      "gCol": 18,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02127",
+      "gRow": 1,
+      "gCol": 19,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02128",
+      "gRow": 2,
+      "gCol": 19,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02129",
+      "gRow": 3,
+      "gCol": 19,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02130",
+      "gRow": 4,
+      "gCol": 19,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02131",
+      "gRow": 5,
+      "gCol": 19,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02132",
+      "gRow": 5,
+      "gCol": 21,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02133",
+      "gRow": 4,
+      "gCol": 21,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02134",
+      "gRow": 3,
+      "gCol": 21,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02135",
+      "gRow": 2,
+      "gCol": 21,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02136",
+      "gRow": 1,
+      "gCol": 21,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02137",
+      "gRow": 2,
+      "gCol": 22,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02138",
+      "gRow": 3,
+      "gCol": 22,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02139",
+      "gRow": 4,
+      "gCol": 22,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02140",
+      "gRow": 5,
+      "gCol": 22,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02141",
+      "gRow": 6,
+      "gCol": 24,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02142",
+      "gRow": 5,
+      "gCol": 24,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02143",
+      "gRow": 4,
+      "gCol": 24,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02144",
+      "gRow": 4,
+      "gCol": 26,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02145",
+      "gRow": 5,
+      "gCol": 26,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02146",
+      "gRow": 6,
+      "gCol": 26,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02147",
+      "gRow": 6,
+      "gCol": 27,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02148",
+      "gRow": 5,
+      "gCol": 27,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02149",
+      "gRow": 4,
+      "gCol": 27,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02150",
+      "gRow": 4,
+      "gCol": 29,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02151",
+      "gRow": 5,
+      "gCol": 29,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02152",
+      "gRow": 6,
+      "gCol": 29,
+      "type": "1",
+      "team": "public"
+    }
+  ],
+  "seatListC": [
+    {
+      "id": "02169",
+      "gRow": 1,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02170",
+      "gRow": 1,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02171",
+      "gRow": 1,
+      "gCol": 5,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02172",
+      "gRow": 1,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02173",
+      "gRow": 1,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02174",
+      "gRow": 2,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02175",
+      "gRow": 2,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02176",
+      "gRow": 2,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02177",
+      "gRow": 2,
+      "gCol": 5,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02178",
+      "gRow": 2,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02179",
+      "gRow": 4,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02180",
+      "gRow": 4,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02181",
+      "gRow": 4,
+      "gCol": 5,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02182",
+      "gRow": 4,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02183",
+      "gRow": 4,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02184",
+      "gRow": 4,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02185",
+      "gRow": 4,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02186",
+      "gRow": 5,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02187",
+      "gRow": 5,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02188",
+      "gRow": 5,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02189",
+      "gRow": 5,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02190",
+      "gRow": 5,
+      "gCol": 5,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02191",
+      "gRow": 5,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02192",
+      "gRow": 5,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02193",
+      "gRow": 7,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02194",
+      "gRow": 7,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02195",
+      "gRow": 7,
+      "gCol": 5,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02196",
+      "gRow": 7,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02197",
+      "gRow": 7,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02198",
+      "gRow": 7,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02199",
+      "gRow": 7,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02200",
+      "gRow": 8,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02201",
+      "gRow": 8,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02202",
+      "gRow": 8,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02203",
+      "gRow": 8,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02204",
+      "gRow": 8,
+      "gCol": 5,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02205",
+      "gRow": 8,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02206",
+      "gRow": 8,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02207",
+      "gRow": 10,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02208",
+      "gRow": 10,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02209",
+      "gRow": 10,
+      "gCol": 5,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02210",
+      "gRow": 10,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02211",
+      "gRow": 10,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02212",
+      "gRow": 10,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02213",
+      "gRow": 10,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02214",
+      "gRow": 11,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02215",
+      "gRow": 11,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02216",
+      "gRow": 11,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02217",
+      "gRow": 11,
+      "gCol": 5,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02218",
+      "gRow": 11,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02219",
+      "gRow": 13,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02220",
+      "gRow": 13,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02221",
+      "gRow": 13,
+      "gCol": 5,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02222",
+      "gRow": 13,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02223",
+      "gRow": 13,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02224",
+      "gRow": 13,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02225",
+      "gRow": 13,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02226",
+      "gRow": 14,
+      "gCol": 1,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02227",
+      "gRow": 14,
+      "gCol": 2,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02228",
+      "gRow": 14,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02229",
+      "gRow": 14,
+      "gCol": 4,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02230",
+      "gRow": 14,
+      "gCol": 5,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02231",
+      "gRow": 14,
+      "gCol": 7,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02232",
+      "gRow": 14,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02236",
+      "gRow": 2,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02237",
+      "gRow": 9,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02238",
+      "gRow": 11,
+      "gCol": 8,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02239",
+      "gRow": 11,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    },
+    {
+      "id": "02240",
+      "gRow": 2,
+      "gCol": 3,
+      "type": "1",
+      "team": "public"
+    }
+  ],
+  "seatTypeList": [
+    {
+        "name": "可选",
+        "type": "0",
+        "seats": 1,
+        "icon": "https://i.postimg.cc/1X2dd93h/image.png",
+        "isShow": "1",
+        "position": "up"
+      },
+      {
+        "name": "已选",
+        "type": "1",
+        "seats": 1,
+        "icon": "https://i.postimg.cc/LXywzkds/image.png",
+        "isShow": "1",
+        "position": "up"
+      }
+  ]
+}
