@@ -18,6 +18,8 @@ export default {
     return {
       site_num: 'WS02.',
       result: '未生成有效二维码',
+      response_body: '',
+      ip_valid: 'false',
       qr_value: 'test',
       code_show: 0,
       encrypt_data: 'testme',
@@ -30,8 +32,8 @@ export default {
   methods: {
     greet: function (event) {
       if (event) {
-        if (this.site_num.length === 10) {
-          this.site_string = this.site_num
+        if (this.site_num.length === 10 && this.site_num < 'WS02.02233' && this.site_num > 'WS02.02004') {
+          this.site_string = this.site_num.slice(5)
           this.$http({
             url: '/api/powercubicle/v1/seat/encrypt',
             method: 'POST',
@@ -42,20 +44,21 @@ export default {
               'Content-Type': 'application/json'
             }
           }).then(function (res) {
-            this.encrypt_data = res.body
             console.log(res.body)
+            console.log(typeof res.body)
+            this.encrypt_data = JSON.stringify(res.body)
+            console.log(this.site_string)
           }, function (error) {
             console.log(error.body)
+            this.result = '未生成有效二维码'
+            this.code_show = 0
+            alert('cannot obtain code string')
           })
-
-          this.result = '已生成可扫描二维码'
-
-          this.code_show = 1
         } else {
           this.result = '未生成有效二维码'
           this.code_show = 0
           this.qr_value = 'test'
-          alert('Please input 10 characters!')
+          alert('Please input 10 valid characters! [WS02.02005 ~ WS02.02232]')
         }
       }
     },
@@ -73,7 +76,18 @@ export default {
       if (this.encrypt_data === '') {
         return
       }
-      this.qr_value = ((this.encrypt_data).split('=')).slice(-1)[0]
+      this.response_body = ((this.encrypt_data).slice(1, -1)).split(',')
+      this.ip_valid = ((this.response_body[2]).split(':').slice(-1)[0])
+      console.log(this.ip_valid)
+      if (this.ip_valid.indexOf('true') !== -1) {
+        this.qr_value = ((this.response_body[0]).split(':')).slice(-1)[0]
+        this.result = '已生成可扫描二维码'
+        this.code_show = 1
+      } else {
+        this.result = '未生成有效二维码'
+        this.code_show = 0
+        alert('please arrive at the office building')
+      }
     }
   }
 }
