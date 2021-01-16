@@ -94,6 +94,18 @@ func retrieveRegionStatus(w http.ResponseWriter, r *http.Request, region string)
 
 	res, getErr := cubeClient.Do(req)
 
+	if resp.StatusCode == 400 || resp.StatusCode == 401 {
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		//Convert the body to type string
+		err_msg := string(body)
+		log.Printf(err_msg)
+		http.Error(w, err_msg, resp.StatusCode)
+		return
+	}
+
 	if getErr != nil {
 		log.Fatal(getErr)
 	}
