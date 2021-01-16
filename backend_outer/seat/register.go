@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
@@ -44,7 +45,7 @@ func SeatRegister(w http.ResponseWriter, r *http.Request) {
 func registSeat(w http.ResponseWriter, r *http.Request, seatNumber string, sessionAuth string) {
 	urlUserRegister := "http://localhost:5001/powercubicle/v1/db/seat/register"
 
-	// seatNumber = "02005"
+	seatNumber = "02005"
 	seatNumber = strings.TrimPrefix(seatNumber, "WS02.")
 	seatCode := map[string]string{
 		"seat_code": seatNumber,
@@ -68,7 +69,18 @@ func registSeat(w http.ResponseWriter, r *http.Request, seatNumber string, sessi
 		log.Fatal(err)
 	}
 
-	_, getErr := cubeClient.Do(req)
+	resp, getErr := cubeClient.Do(req)
+	if resp.StatusCode == 400 || resp.StatusCode == 401 {
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		//Convert the body to type string
+		err_msg := string(body)
+		log.Printf(err_msg)
+		http.Error(w, err_msg, resp.StatusCode)
+		return
+	}
 
 	if getErr != nil {
 		log.Fatal(getErr)
