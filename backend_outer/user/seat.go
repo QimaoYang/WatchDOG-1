@@ -41,6 +41,18 @@ func userSeatInfo(w http.ResponseWriter, r *http.Request, sessionAuth string) {
 
 	res, getErr := cubeClient.Do(req)
 
+	if res.StatusCode == 400 || res.StatusCode == 401 {
+		body, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		//Convert the body to type string
+		err_msg := string(body)
+		log.Printf(err_msg)
+		http.Error(w, err_msg, res.StatusCode)
+		return
+	}
+
 	if getErr != nil {
 		log.Fatal(getErr)
 	}
