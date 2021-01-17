@@ -48,7 +48,7 @@ func getKey() []byte {
 }
 
 func EncryptCode(w http.ResponseWriter, r *http.Request) {
-	var encryp_str string
+	var encrypt_str string
 	var msg string
 	ipAddr := GetIP(r)
 
@@ -69,18 +69,18 @@ func EncryptCode(w http.ResponseWriter, r *http.Request) {
 		cipher_text := []byte(seat_number + currentTime)
 		fmt.Println(string(cipher_text))
 
-		encryp_text := encryptDES(cipher_text, key)
-		encryp_str = hex.EncodeToString(encryp_text)
-		log.Println("encryp_text: ", encryp_str)
+		encrypt_text := encryptDES(cipher_text, key)
+		encrypt_str = hex.EncodeToString(encrypt_text)
+		log.Println("encrypt_text: ", encrypt_str)
 	} else {
 		msg = "false"
 	}
 
 	w.Header().Add("Content-Type", "application/json")
 	resp, _ := json.Marshal(map[string]string{
-		"encryp_text": encryp_str,
-		"ipAddr":      ipAddr,
-		"msg":         msg,
+		"encrypt_text": encrypt_str,
+		"ipAddr":       ipAddr,
+		"msg":          msg,
 	})
 	w.Write(resp)
 }
