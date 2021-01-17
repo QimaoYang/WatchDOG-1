@@ -15,7 +15,7 @@ response:
 status code: 201
 response body{JSON}:
 {
-    "encryp_text": string,
+    "encrypt_text": string,
     "ipAddr": string,
     "msg": string,
 }
