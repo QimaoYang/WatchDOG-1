@@ -3,8 +3,6 @@ package seat
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
@@ -37,16 +35,16 @@ func SeatRegister(w http.ResponseWriter, r *http.Request) {
 	seatCode := management.DecryptCode(p.Encryted)
 	// res := map[string]string{"seat_number": seatCode}
 	// json.NewEncoder(w).Encode(res)
-	log.Println(seatCode)
-	log.Println("Endpoint Hit: SeatRegister")
+	log.Println("[WD] Raw seat code is", seatCode)
 	registSeat(w, r, seatCode, seatSessionKey)
 }
 
 func registSeat(w http.ResponseWriter, r *http.Request, seatNumber string, sessionAuth string) {
 	urlUserRegister := "http://localhost:5001/powercubicle/v1/db/seat/register"
 
-	seatNumber = "02005"
 	seatNumber = strings.TrimPrefix(seatNumber, "WS02.")
+	log.Println("[WD] Start booking seat ", seatNumber)
+
 	seatCode := map[string]string{
 		"seat_code": seatNumber,
 	}
@@ -56,12 +54,10 @@ func registSeat(w http.ResponseWriter, r *http.Request, seatNumber string, sessi
 		log.Fatal(jsonErr)
 	}
 
-	log.Printf("User info is %v", seatCode)
 	cubeClient := http.Client{
 		Timeout: time.Second * 5, // Timeout after 5 seconds
 	}
 
-	fmt.Println("auth", sessionAuth)
 	req, err := http.NewRequest(http.MethodPost, urlUserRegister, bytes.NewBuffer(jsonString))
 	req.Header.Add("Authorization", sessionAuth)
 
@@ -70,15 +66,25 @@ func registSeat(w http.ResponseWriter, r *http.Request, seatNumber string, sessi
 	}
 
 	resp, getErr := cubeClient.Do(req)
-	if resp.StatusCode == 400 || resp.StatusCode == 401 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		//Convert the body to type string
-		err_msg := string(body)
-		log.Printf(err_msg)
-		http.Error(w, err_msg, resp.StatusCode)
+
+	switch resp.StatusCode {
+	case 400:
+		errMsg := strings.Join([]string{"The seat", seatNumber, "has been booked"}, " ")
+		resError := common.Errors{}
+		resError = resError.NewError(400, errMsg)
+		errCode, errMsg := resError.GetError()
+
+		log.Printf("[WD] ", errMsg)
+		http.Error(w, errMsg, errCode)
+		return
+	case 401:
+		errMsg := "User's token has expired"
+		resError := common.Errors{}
+		resError = resError.NewError(401, errMsg)
+		errCode, errMsg := resError.GetError()
+
+		log.Printf("[WD] ", errMsg)
+		http.Error(w, errMsg, errCode)
 		return
 	}
 
