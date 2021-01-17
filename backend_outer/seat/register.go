@@ -37,8 +37,8 @@ func SeatRegister(w http.ResponseWriter, r *http.Request) {
 	seatCode := management.DecryptCode(p.Encryted)
 	// res := map[string]string{"seat_number": seatCode}
 	// json.NewEncoder(w).Encode(res)
-	fmt.Println(seatCode)
-	fmt.Println("Endpoint Hit: SeatRegister")
+	log.Println(seatCode)
+	log.Println("Endpoint Hit: SeatRegister")
 	registSeat(w, r, seatCode, seatSessionKey)
 }
 

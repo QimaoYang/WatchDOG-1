@@ -116,8 +116,15 @@ func retrieveRegionStatus(w http.ResponseWriter, r *http.Request, region string)
 		log.Fatal(jsonErr)
 	}
 
-	// need further logic handler
-	log.Printf("[watch dog] The region %s seats info is %v", region, seatInfo)
+	regionSeat := map[string]string{}
+	for _, reg := range seatInfo.Data.Seat {
+		for k, v := range reg {
+			regionSeat[k] = v
+		}
+	}
 
-	json.NewEncoder(w).Encode(seatInfo)
+	// need further logic handler
+	log.Printf("[watch dog] The region %s seats info is %v", region, regionSeat)
+
+	json.NewEncoder(w).Encode(regionSeat)
 }
