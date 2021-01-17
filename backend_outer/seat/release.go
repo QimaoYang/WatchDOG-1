@@ -2,7 +2,6 @@ package seat
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -17,19 +16,17 @@ func SeatRelease(w http.ResponseWriter, r *http.Request) {
 	}
 
 	seatSessionKey := r.Header.Get("Authorization")
-	log.Println("the seat session key is", seatSessionKey)
-	fmt.Println("Endpoint Hit: SeatRegister")
 	releaseSeat(w, r, seatSessionKey)
 }
 
 func releaseSeat(w http.ResponseWriter, r *http.Request, sessionAuth string) {
 	urlSeatRelease := "http://localhost:5001/powercubicle/v1/db/seat/release"
+	log.Println("[WD] Start releasing your seat")
 
 	cubeClient := http.Client{
 		Timeout: time.Second * 5, // Timeout after 5 seconds
 	}
 
-	fmt.Println("auth", sessionAuth)
 	req, err := http.NewRequest(http.MethodPost, urlSeatRelease, nil)
 	req.Header.Add("Authorization", sessionAuth)
 
@@ -39,19 +36,31 @@ func releaseSeat(w http.ResponseWriter, r *http.Request, sessionAuth string) {
 
 	resp, getErr := cubeClient.Do(req)
 
-	if resp.StatusCode == 400 || resp.StatusCode == 401 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		//Convert the body to type string
-		err_msg := string(body)
-		log.Printf(err_msg)
-		http.Error(w, err_msg, resp.StatusCode)
+	switch resp.StatusCode {
+	case 400:
+		errMsg := "Don't double release the seat"
+		resError := common.Errors{}
+		resError = resError.NewError(400, errMsg)
+		errCode, errMsg := resError.GetError()
+
+		log.Printf("[WD] ", errMsg)
+		http.Error(w, errMsg, errCode)
+		return
+	case 401:
+		errMsg := "User's token has expired"
+		resError := common.Errors{}
+		resError = resError.NewError(401, errMsg)
+		errCode, errMsg := resError.GetError()
+
+		log.Printf("[WD] ", errMsg)
+		http.Error(w, errMsg, errCode)
 		return
 	}
 
 	if getErr != nil {
 		log.Fatal(getErr)
 	}
+
+	w.WriteHeader(http.StatusCreated)
+	fmt.Fprintf(w, "Your seat has been release")
 }
