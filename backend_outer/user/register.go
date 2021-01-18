@@ -73,18 +73,6 @@ func getSessionKey(w http.ResponseWriter, r *http.Request, userRegisterInfo *use
 
 	res, getErr := cubeClient.Do(req)
 
-	if res.StatusCode == 400 || res.StatusCode == 401 {
-		body, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		//Convert the body to type string
-		err_msg := string(body)
-		log.Printf(err_msg)
-		http.Error(w, err_msg, res.StatusCode)
-		return
-	}
-
 	if getErr != nil {
 		log.Fatal(getErr)
 	}
@@ -99,6 +87,28 @@ func getSessionKey(w http.ResponseWriter, r *http.Request, userRegisterInfo *use
 		log.Fatal(readErr)
 	}
 
+	switch res.StatusCode {
+	case 400:
+		errMsg := errorMessage{}
+		jsonErrs := json.Unmarshal(body, &errMsg)
+
+		if jsonErrs != nil {
+			log.Fatal(jsonErrs)
+		}
+
+		switch errMsg.Message {
+		case "Username has been used":
+			errMsg := "Username has been used"
+			resError := common.Errors{}
+			resError = resError.NewError(400, errMsg)
+			errCode, errMsg := resError.GetError()
+
+			log.Printf("[WD] ", errMsg)
+			http.Error(w, errMsg, errCode)
+			return
+		}
+	}
+
 	userSessionKey := sessionKey{}
 
 	jsonErrSecond := json.Unmarshal(body, &userSessionKey)
@@ -109,9 +119,5 @@ func getSessionKey(w http.ResponseWriter, r *http.Request, userRegisterInfo *use
 
 	// need further logic handler
 	log.Printf("[watch dog] The user register session key is %v", userSessionKey)
-	if userSessionKey.Session_key == "" {
-		http.Error(w, "Bad request - user already exists!", 400)
-	} else {
-		json.NewEncoder(w).Encode(userSessionKey)
-	}
+	json.NewEncoder(w).Encode(userSessionKey)
 }

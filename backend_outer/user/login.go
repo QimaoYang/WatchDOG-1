@@ -21,6 +21,10 @@ type loginSessionKey struct {
 	Session_key string `json : "session_key"`
 }
 
+type errorMessage struct {
+	Message string `json: "message"`
+}
+
 func UserLogin(w http.ResponseWriter, r *http.Request) {
 	common.SetupCORS(&w, r)
 	if (*r).Method == "OPTIONS" {
@@ -74,18 +78,6 @@ func getUserSessionKey(w http.ResponseWriter, r *http.Request, userLoginInfo *lo
 
 	res, getErr := cubeClient.Do(req)
 
-	if res.StatusCode == 400 || res.StatusCode == 401 {
-		body, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		//Convert the body to type string
-		err_msg := string(body)
-		log.Printf(err_msg)
-		http.Error(w, err_msg, res.StatusCode)
-		return
-	}
-
 	if getErr != nil {
 		log.Fatal(getErr)
 	}
@@ -100,6 +92,37 @@ func getUserSessionKey(w http.ResponseWriter, r *http.Request, userLoginInfo *lo
 		log.Fatal(readErr)
 	}
 
+	switch res.StatusCode {
+	case 400:
+		errMsg := errorMessage{}
+		jsonErrs := json.Unmarshal(body, &errMsg)
+
+		if jsonErrs != nil {
+			log.Fatal(jsonErrs)
+		}
+
+		switch errMsg.Message {
+		case "wrong password":
+			errMsg := "wrong password"
+			resError := common.Errors{}
+			resError = resError.NewError(400, errMsg)
+			errCode, errMsg := resError.GetError()
+
+			log.Printf("[WD] ", errMsg)
+			http.Error(w, errMsg, errCode)
+			return
+		case "wrong username":
+			errMsg := "wrong username"
+			resError := common.Errors{}
+			resError = resError.NewError(400, errMsg)
+			errCode, errMsg := resError.GetError()
+
+			log.Printf("[WD] ", errMsg)
+			http.Error(w, errMsg, errCode)
+			return
+		}
+	}
+
 	userSessionKey := loginSessionKey{}
 
 	jsonErrSecond := json.Unmarshal(body, &userSessionKey)
@@ -110,9 +133,5 @@ func getUserSessionKey(w http.ResponseWriter, r *http.Request, userLoginInfo *lo
 
 	// need further logic handler
 	log.Printf("[watch dog] The user login session key is %v", userSessionKey)
-	if userSessionKey.Session_key == "" {
-		http.Error(w, "Bad request - wrong username or password", 400)
-	} else {
-		json.NewEncoder(w).Encode(userSessionKey)
-	}
+	json.NewEncoder(w).Encode(userSessionKey)
 }

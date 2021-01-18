@@ -21,7 +21,6 @@ func UserSeat(w http.ResponseWriter, r *http.Request) {
 	}
 
 	seatSessionKey := r.Header.Get("Authorization")
-	log.Println("the seat session key is", seatSessionKey)
 	userSeatInfo(w, r, seatSessionKey)
 }
 
@@ -41,15 +40,15 @@ func userSeatInfo(w http.ResponseWriter, r *http.Request, sessionAuth string) {
 
 	res, getErr := cubeClient.Do(req)
 
-	if res.StatusCode == 400 || res.StatusCode == 401 {
-		body, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		//Convert the body to type string
-		err_msg := string(body)
-		log.Printf(err_msg)
-		http.Error(w, err_msg, res.StatusCode)
+	switch res.StatusCode {
+	case 401:
+		errMsg := "User's token has expired"
+		resError := common.Errors{}
+		resError = resError.NewError(401, errMsg)
+		errCode, errMsg := resError.GetError()
+
+		log.Printf("[WD] ", errMsg)
+		http.Error(w, errMsg, errCode)
 		return
 	}
 
@@ -77,10 +76,5 @@ func userSeatInfo(w http.ResponseWriter, r *http.Request, sessionAuth string) {
 
 	// need further logic handler
 	log.Printf("[watch dog] The user's reserved seat is %v", userSeat)
-	// if userSessionKey.Session_key == "" {
-	// 	http.Error(w, "Bad request - user already exists!", 400)
-	// } else {
-	// 	json.NewEncoder(w).Encode(userSessionKey)
-	// }
 	json.NewEncoder(w).Encode(userSeat)
 }
