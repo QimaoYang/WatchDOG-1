@@ -38,7 +38,7 @@ func RetrieveAllSeatStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 func retrieveOverallStatus(w http.ResponseWriter, r *http.Request) {
-	urlSeats := "http://localhost:5001/powercubicle/v1/db/seat"
+	urlSeats := "http://192.168.242.158:5001/powercubicle/v1/db/seat"
 
 	cubeClient := http.Client{
 		Timeout: time.Second * 5, // Timeout after 2 seconds
@@ -80,7 +80,7 @@ func retrieveOverallStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 func retrieveRegionStatus(w http.ResponseWriter, r *http.Request, region string) {
-	urlSeats := "http://localhost:5001/powercubicle/v1/db/seat"
+	urlSeats := "http://192.168.242.158:5001/powercubicle/v1/db/seat"
 	urlRegionSeats := strings.Join([]string{urlSeats, "?region=", region}, "")
 	cubeClient := http.Client{
 		Timeout: time.Second * 5, // Timeout after 2 seconds

@@ -25,7 +25,7 @@ func UserSeat(w http.ResponseWriter, r *http.Request) {
 }
 
 func userSeatInfo(w http.ResponseWriter, r *http.Request, sessionAuth string) {
-	urlUserSeat := "http://localhost:5001/powercubicle/v1/db/user/seat"
+	urlUserSeat := "http://192.168.242.158:5001/powercubicle/v1/db/user/seat"
 
 	cubeClient := http.Client{
 		Timeout: time.Second * 5, // Timeout after 5 seconds
