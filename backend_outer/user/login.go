@@ -53,7 +53,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func getUserSessionKey(w http.ResponseWriter, r *http.Request, userLoginInfo *loginInfo) {
-	urlUserRegister := "http://localhost:5001/powercubicle/v1/db/user/login"
+	urlUserRegister := "http://192.168.242.158:5001/powercubicle/v1/db/user/login"
 
 	userStat := map[string]string{
 		"username": userLoginInfo.Name,
