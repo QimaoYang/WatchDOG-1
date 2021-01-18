@@ -12,6 +12,7 @@
 
 <script>
 import vueQr from 'vue-qr'
+import axios from 'axios'
 export default {
   name: 'HelloWorld',
   data () {
@@ -23,6 +24,7 @@ export default {
       qr_value: 'test',
       code_show: 0,
       encrypt_data: 'testme',
+      seat_num: '',
       imageUrl: require('../assets/vxrail.png')
     }
   },
@@ -34,22 +36,23 @@ export default {
       if (event) {
         if (this.site_num.length === 10 && this.site_num < 'WS02.02233' && this.site_num > 'WS02.02004') {
           this.site_string = this.site_num.slice(5)
-          this.$http({
+          this.seat_num = {
+            'seat_number': this.site_string
+          }
+          axios({
             url: '/api/powercubicle/v1/seat/encrypt',
             method: 'POST',
-            data: {
-              seat_number: this.site_string
-            },
+            data: JSON.stringify(this.seat_num),
             headers: {
               'Content-Type': 'application/json'
             }
-          }).then(function (res) {
-            console.log(res.body)
-            console.log(typeof res.body)
-            this.encrypt_data = JSON.stringify(res.body)
-            console.log(this.site_string)
-          }, function (error) {
-            console.log(error.body)
+          }).then((res) => {
+            console.log(res.data)
+            this.encrypt_data = res.data
+            console.log(this.encrypt_data)
+            console.log(JSON.stringify(this.seat_num))
+          }).catch((error) => {
+            console.log(error)
             this.result = '未生成有效二维码'
             this.code_show = 0
             alert('cannot obtain code string')
@@ -73,14 +76,10 @@ export default {
   },
   watch: {
     encrypt_data () {
-      if (this.encrypt_data === '') {
-        return
-      }
-      this.response_body = ((this.encrypt_data).slice(1, -1)).split(',')
-      this.ip_valid = ((this.response_body[2]).split(':').slice(-1)[0])
-      console.log(this.ip_valid)
+      this.response_body = this.encrypt_data.encrypt_text
+      this.ip_valid = this.encrypt_data.msg
       if (this.ip_valid.indexOf('true') !== -1) {
-        this.qr_value = ((this.response_body[0]).split(':')).slice(-1)[0]
+        this.qr_value = this.response_body
         this.result = '已生成可扫描二维码'
         this.code_show = 1
       } else {
