@@ -9,7 +9,6 @@ import (
 
 func IpFilter(r *http.Request) bool {
 	client_ip := GetIP(r)
-	log.Println("get ip: ", client_ip)
 
 	// return BlockAddr(net.ParseIP(client_ip))
 
@@ -27,11 +26,19 @@ func IpFilter(r *http.Request) bool {
 // GetIP gets a requests IP address by reading off the forwarded-for
 func GetIP(r *http.Request) string {
 	forwarded := r.Header.Get("X-FORWARDED-FOR")
+	// fmt.Println(forwarded)
+	realIp := r.Header.Get("X-Real-IP")
+	// fmt.Println(realIp)
 	if forwarded != "" {
-		log.Println("X-FORWARDED-FOR: ", forwarded)
+		log.Println("get X-FORWARDED-FOR: ", forwarded)
 		return forwarded
+	} else if realIp != "" {
+		log.Println("get realIp: ", realIp)
+		return realIp
 	}
-	return strings.Split(r.RemoteAddr, ":")[0]
+	remoteAddr := strings.Split(r.RemoteAddr, ":")[0]
+	log.Println("get RemoteAddr: ", remoteAddr)
+	return remoteAddr
 }
 
 func BlockAddr(ip net.IP) bool {

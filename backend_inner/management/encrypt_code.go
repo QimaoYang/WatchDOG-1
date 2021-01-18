@@ -63,15 +63,16 @@ func EncryptCode(w http.ResponseWriter, r *http.Request) {
 		var params map[string]string
 		body.Decode(&params)
 		seat_number := params["seat_number"]
-		log.Println("seat_number: " + seat_number)
+		log.Println("get seat_number from frontend: " + seat_number)
 
 		currentTime := time.Now().Format("2006-01-02 15:04:05")
 		cipher_text := []byte(seat_number + currentTime)
 		fmt.Println(string(cipher_text))
 
+		log.Println("start encrypting the seat_number and date...")
 		encrypt_text := encryptDES(cipher_text, key)
 		encrypt_str = hex.EncodeToString(encrypt_text)
-		log.Println("encrypt_text: ", encrypt_str)
+		log.Println("the encrypt_text is: ", encrypt_str)
 	} else {
 		msg = "false"
 	}

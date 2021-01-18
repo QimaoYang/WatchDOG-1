@@ -46,12 +46,13 @@ func DecryptCode(encryp_text string) string {
 
 	decodedStr, _ := hex.DecodeString(encryp_text)
 	fmt.Println(decodedStr)
+	log.Println("start decrypting the seat_number and date...")
 	decrypt_text := decryptDES(decodedStr, key)
-	log.Println("decrypt_text: " + decrypt_text)
+	log.Println("the decrypt_text is: " + decrypt_text)
 
 	seat_number := decrypt_text[:5]
 	time := decrypt_text[5:]
-	log.Println("seat_number: " + seat_number)
-	log.Println("time: " + time)
+	log.Println("the seat_number is: " + seat_number)
+	log.Println("the time is: " + time)
 	return seat_number
 }
