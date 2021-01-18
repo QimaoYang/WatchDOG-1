@@ -34,8 +34,8 @@ func encryptDES(src []byte, key []byte) []byte {
 func getKey() []byte {
 	exPath, _ := os.Getwd()
 	log.Println("expath: ", exPath)
-	// file, err := os.Open(exPath + "/management/key.txt")
-	file, err := os.Open(exPath + "/" + "key.txt")
+	file, err := os.Open(exPath + "/management/key.txt")
+	// file, err := os.Open(exPath + "/" + "key.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
