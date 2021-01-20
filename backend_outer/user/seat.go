@@ -2,6 +2,7 @@ package user
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -15,17 +16,13 @@ type Seat struct {
 }
 
 func UserSeat(w http.ResponseWriter, r *http.Request) {
-	common.SetupCORS(&w, r)
-	if (*r).Method == "OPTIONS" {
-		return
-	}
-
 	seatSessionKey := r.Header.Get("Authorization")
+	fmt.Println("Ths session key is: ", seatSessionKey)
 	userSeatInfo(w, r, seatSessionKey)
 }
 
 func userSeatInfo(w http.ResponseWriter, r *http.Request, sessionAuth string) {
-	urlUserSeat := "http://192.168.242.158:5001/powercubicle/v1/db/user/seat"
+	urlUserSeat := "http://222.186.160.104:5001/powercubicle/v1/db/user/seat"
 
 	cubeClient := http.Client{
 		Timeout: time.Second * 5, // Timeout after 5 seconds

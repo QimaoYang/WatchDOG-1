@@ -26,11 +26,6 @@ type errorMessage struct {
 }
 
 func UserLogin(w http.ResponseWriter, r *http.Request) {
-	common.SetupCORS(&w, r)
-	if (*r).Method == "OPTIONS" {
-		return
-	}
-
 	w.Header().Set("Content-Type", "application/json")
 
 	body, readErr := ioutil.ReadAll(r.Body)
@@ -53,7 +48,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func getUserSessionKey(w http.ResponseWriter, r *http.Request, userLoginInfo *loginInfo) {
-	urlUserRegister := "http://192.168.242.158:5001/powercubicle/v1/db/user/login"
+	urlUserRegister := "http://222.186.160.104:5001/powercubicle/v1/db/user/login"
 
 	userStat := map[string]string{
 		"username": userLoginInfo.Name,
