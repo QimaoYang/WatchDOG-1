@@ -79,8 +79,9 @@ export default {
       this.response_body = this.encrypt_data.encrypt_text
       this.ip_valid = this.encrypt_data.msg
       if (this.ip_valid.indexOf('true') !== -1) {
-        this.qr_value = this.response_body
+        this.qr_value = 'http://dellemc.evenhidata.com:8080/?encryptCode=' + this.response_body
         this.result = '已生成可扫描二维码'
+        console.log(this.qr_value)
         this.code_show = 1
       } else {
         this.result = '未生成有效二维码'
