@@ -17,11 +17,6 @@ type QrCode struct {
 }
 
 func SeatRegister(w http.ResponseWriter, r *http.Request) {
-	common.SetupCORS(&w, r)
-	if (*r).Method == "OPTIONS" {
-		return
-	}
-
 	seatSessionKey := r.Header.Get("Authorization")
 	log.Println("the seat session key is", seatSessionKey)
 	var p QrCode
@@ -40,7 +35,7 @@ func SeatRegister(w http.ResponseWriter, r *http.Request) {
 }
 
 func registSeat(w http.ResponseWriter, r *http.Request, seatNumber string, sessionAuth string) {
-	urlUserRegister := "http://192.168.242.158:5001/powercubicle/v1/db/seat/register"
+	urlUserRegister := "http://222.186.160.104:5001/powercubicle/v1/db/seat/register"
 
 	seatNumber = strings.TrimPrefix(seatNumber, "WS02.")
 	log.Println("[WD] Start booking seat ", seatNumber)

@@ -10,17 +10,12 @@ import (
 )
 
 func SeatRelease(w http.ResponseWriter, r *http.Request) {
-	common.SetupCORS(&w, r)
-	if (*r).Method == "OPTIONS" {
-		return
-	}
-
 	seatSessionKey := r.Header.Get("Authorization")
 	releaseSeat(w, r, seatSessionKey)
 }
 
 func releaseSeat(w http.ResponseWriter, r *http.Request, sessionAuth string) {
-	urlSeatRelease := "http://192.168.242.158:5001/powercubicle/v1/db/seat/release"
+	urlSeatRelease := "http://222.186.160.104:5001/powercubicle/v1/db/seat/release"
 	log.Println("[WD] Start releasing your seat")
 
 	cubeClient := http.Client{

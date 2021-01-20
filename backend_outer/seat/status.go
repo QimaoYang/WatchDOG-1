@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"strings"
 	"time"
-
-	"github.com/ChrisLi03/WatchDOG/backend_outer/common"
 )
 
 type seatStatus struct {
@@ -24,10 +22,6 @@ type regionSeats struct {
 }
 
 func RetrieveAllSeatStatus(w http.ResponseWriter, r *http.Request) {
-	common.SetupCORS(&w, r)
-	if (*r).Method == "OPTIONS" {
-		return
-	}
 
 	v1 := r.URL.Query()
 	if reg, ok := v1["region"]; ok {
@@ -38,7 +32,7 @@ func RetrieveAllSeatStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 func retrieveOverallStatus(w http.ResponseWriter, r *http.Request) {
-	urlSeats := "http://192.168.242.158:5001/powercubicle/v1/db/seat"
+	urlSeats := "http://222.186.160.104:5001/powercubicle/v1/db/seat"
 
 	cubeClient := http.Client{
 		Timeout: time.Second * 5, // Timeout after 2 seconds
@@ -80,7 +74,7 @@ func retrieveOverallStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 func retrieveRegionStatus(w http.ResponseWriter, r *http.Request, region string) {
-	urlSeats := "http://192.168.242.158:5001/powercubicle/v1/db/seat"
+	urlSeats := "http://222.186.160.104:5001/powercubicle/v1/db/seat"
 	urlRegionSeats := strings.Join([]string{urlSeats, "?region=", region}, "")
 	cubeClient := http.Client{
 		Timeout: time.Second * 5, // Timeout after 2 seconds
