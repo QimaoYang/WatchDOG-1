@@ -115,11 +115,10 @@ class getAvailable(Resource):
             exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.user_id == user.id).filter(Reservation.release_time >= datetime.now()).first()
             if exists_result:
                 exists_result.release_time = datetime.now()
-                #exists_result.end_time = datetime.now()
                 db.session.commit()
-                db.session.refresh(exists_result)
                 return exists_result.id, 200
             else:
+                db.session.rollback()
                 return {"message": "The didn't been reserved"}, 400
         except:
             return {"message": "bad payload"}, 400
@@ -138,6 +137,13 @@ class getAvailable(Resource):
             r = json.loads(r)
             current_user = get_jwt_identity()
             user = User.query.filter_by(username=current_user).first()
+            if not user:
+                return {"message": "Token has expired"}, 422
+            #check if the user has already booked a seat.
+            exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.user_id == user.id).filter(Reservation.release_time >= datetime.now()).first()
+            if exists_result:
+                db.session.rollback()
+                return {"message": "the user had booked a seat"}, 400
 
             # create a reservations
             reservations = Reservation()
@@ -147,16 +153,20 @@ class getAvailable(Resource):
 
             s = db.session.query(Seat).filter(Seat.seatCode == r["seat_code"]).filter(or_(Seat.team == "public", Seat.team == user.team)).first()
             if not s:
-                return {"message": "No such seat"}, 400
+                return {"message": "No such seat or the user not belong to the team"}, 400
             reservations.seat_id = s.id
 
             exists_result = db.session.query(Reservation).with_lockmode("update").filter(Reservation.seat_id == s.id).filter(Reservation.release_time >= datetime.now()).order_by(Reservation.created).first()
             if not exists_result:
+                reservations.created = datetime.now()
+                reservations.end_time = datetime.now()+timedelta(hours=9)
+                reservations.release_time = datetime.now()+timedelta(hours=9)
+                reservations.start_time = datetime.now()
                 db.session.add(reservations)
                 db.session.commit()
-                db.session.refresh(reservations)
                 return reservations.id, 200
             else:
+                db.session.rollback()
                 return {"message": "The seat has been reserved"}, 400
         except:
            return {"message": "bad payload"}, 400
