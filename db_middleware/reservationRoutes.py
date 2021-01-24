@@ -20,11 +20,11 @@ def jsontifySeat(seat):
 def jsontifySeatWithList(seat,l):
     if seat.id in l:
         return {
-            f"{seat.seatCode}": "not availble"
+            f"{seat.seatCode}": "not availble", "team":seat.team
         }
     else:
         return {
-            f"{seat.seatCode}": "availble",
+            f"{seat.seatCode}": "availble", "team":seat.team
         }
 
 
