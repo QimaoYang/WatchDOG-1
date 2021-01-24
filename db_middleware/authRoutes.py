@@ -12,12 +12,11 @@ from forms import *
 from datetime import timedelta
 from models import *
 from flask_jwt_extended import create_access_token, create_refresh_token, get_jti, get_jwt_identity, jwt_required, get_raw_jwt,jwt_refresh_token_required
-
+from app import blacklist
 # set ACCESS TOKEN EXPIRES TIME
 ACCESS_EXPIRES = timedelta(days=30)
 REFRESH_EXPIRES = timedelta(days=30)
-
-
+NT_LIST = []
 # init api namespace
 api = Namespace('', description='Auth operations')
 resource_fields = api.model('login_form', login_form)
@@ -46,9 +45,6 @@ class Login(Resource):
         access_token = create_access_token(identity=json.loads(request_body)["username"], expires_delta=timedelta(days=30))
         refresh_token = create_refresh_token(identity=json.loads(request_body)["username"])
 
-        # check token
-        #access_jti = get_jti(encoded_token=access_token)
-        #refresh_jti = get_jti(encoded_token=refresh_token)
 
         # return tokens
         return {
@@ -68,9 +64,13 @@ class Reg(Resource):
             request_body = request.data.decode()
             print(json.loads(request_body))
             username = json.loads(request_body)["username"]
+            nt_id = int(username)
+            if nt_id not in NT_LIST or len(username) != 7:
+                print("username format is not correct")
+                pass
             password = json.loads(request_body)["password"]
-            #name = json.loads(request_body)["name"]
-            #team = json.loads(request_body)["team"]
+            if len(password) < 6:
+                return {"message": "password too short"}, 400
         except:
             return {"message": "wrong payload"}, 400
         # check if username already in database(it should be unique)
@@ -82,12 +82,9 @@ class Reg(Resource):
         new_user = User()
         new_user.username = username
         new_user.password = password
-        #new_user.name = name
-        #new_user.team = team
 
         # gen token
         access_token = create_access_token(identity=json.loads(request_body)["username"], expires_delta=timedelta(days=30))
-        refresh_token = create_refresh_token(identity=json.loads(request_body)["username"])
 
         try:
             # commit new user to database
@@ -117,15 +114,23 @@ class changePassword(Resource):
     @api.param("Authorization", _in='header')
     @api.doc(description="change password")
     def post(self):
-        current_user = get_jwt_identity()
-        # get user info by token
-        user = User.query.filter_by(username=current_user).first()
-        request_body = request.data.decode()
-        request_body = json.loads(request_body)
-        #reset password
-        user.password = request_body['password']
-        #commit to database
-        db.session.commit()
+        try:
+            current_user = get_jwt_identity()
+            request_body = request.data.decode()
+            request_body = json.loads(request_body)
+            password = request_body['password']
+            if len(password) < 6:
+                return {"message": "password too short"}, 400
+            # get user info by token
+            user = User.query.filter_by(username=current_user).first()
+            #reset password
+            user.password = password
+            jti = get_raw_jwt()['jti']
+            blacklist.add(jti)
+            #commit to database
+            db.session.commit()
+        except:
+            return {"message": "bad payload"}, 400
         return 200
 
 class refresh(Resource):
@@ -145,5 +150,5 @@ api.add_resource(Reg, '/v1/db/user/register')
 #api.add_resource(Login, '/login')
 api.add_resource(Login, '/v1/db/user/login')
 #api.add_resource(LogOut, '/logout')
-#api.add_resource(changePassword, '/password')
+api.add_resource(changePassword, '/v1/db/user/password')
 #api.add_resource(refresh, '/refresh')
