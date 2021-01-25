@@ -9,7 +9,6 @@ import (
 
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -35,7 +34,6 @@ func getKey() []byte {
 	exPath, _ := os.Getwd()
 	log.Println("expath: ", exPath)
 	file, err := os.Open(exPath + "/management/key.txt")
-	// file, err := os.Open(exPath + "/" + "key.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -48,14 +46,14 @@ func getKey() []byte {
 }
 
 func EncryptCode(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
 	var encrypt_str string
 	var msg string
-	ipAddr := GetIP(r)
+	ipFilter, ipAddr := IpFilter(r)
 
-	if !IpFilter(r) {
+	if !ipFilter {
 		msg = "true"
 
-		// get the key
 		key := getKey()
 
 		// get seat_number
@@ -63,20 +61,33 @@ func EncryptCode(w http.ResponseWriter, r *http.Request) {
 		var params map[string]string
 		body.Decode(&params)
 		seat_number := params["seat_number"]
-		log.Println("seat_number: " + seat_number)
+		log.Println("get seat_number from frontend: ", seat_number)
 
-		currentTime := time.Now().Format("2006-01-02 15:04:05")
-		cipher_text := []byte(seat_number + currentTime)
-		fmt.Println(string(cipher_text))
+		if seat_number != "" {
+			currentTime := time.Now().Format("2006-01-02 15:04:05")
+			cipher_text := []byte(seat_number + currentTime)
 
-		encrypt_text := encryptDES(cipher_text, key)
-		encrypt_str = hex.EncodeToString(encrypt_text)
-		log.Println("encrypt_text: ", encrypt_str)
+			log.Println("start encrypting the seat_number and date...")
+			encrypt_text := encryptDES(cipher_text, key)
+			encrypt_str = hex.EncodeToString(encrypt_text)
+			log.Println("the encrypt_text is: ", encrypt_str)
+		} else {
+			// resError := common.Errors{}
+			// errCode := 401
+			errMsg := "cannot get seat_number from frontend"
+			// resError = resError.NewError(errCode, errMsg)
+
+			log.Println(errMsg)
+			resp, _ := json.Marshal(map[string]string{
+				"errMsg": errMsg,
+			})
+			w.Write(resp)
+			return
+		}
 	} else {
 		msg = "false"
 	}
 
-	w.Header().Add("Content-Type", "application/json")
 	resp, _ := json.Marshal(map[string]string{
 		"encrypt_text": encrypt_str,
 		"ipAddr":       ipAddr,
