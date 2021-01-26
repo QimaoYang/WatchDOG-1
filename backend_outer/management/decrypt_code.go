@@ -45,9 +45,8 @@ func getKey() []byte {
 }
 
 // check QR code whether is not expired
-func checkQRcode(decrypt_time string) error {
-	err := common.Errors{}
-
+func checkQRcode(decrypt_time string) string {
+	var errMsg string
 	loc, _ := time.LoadLocation("Local")
 	tmp, _ := time.ParseInLocation("2006-01-02 15:04:05", decrypt_time, loc)
 	timestamp := tmp.Unix()
@@ -60,13 +59,12 @@ func checkQRcode(decrypt_time string) error {
 
 	if duration > 1 {
 		errMsg := "Sorry, the QR code has expired!"
-		err = err.NewError(401, errMsg)
 		log.Println(errMsg)
 	}
-	return err
+	return errMsg
 }
 
-func DecryptCode(encryp_text string) (string, error) {
+func (err *common.Errors) DecryptCode(encryp_text string) (string, common.Errors) {
 	var seat_number string
 	key := getKey()
 
@@ -76,10 +74,11 @@ func DecryptCode(encryp_text string) (string, error) {
 	log.Println("the decrypt_text is: ", decrypt_text)
 
 	decrypt_time := decrypt_text[5:]
-	error := checkQRcode(decrypt_time)
-	if error == nil {
+	errMsg := checkQRcode(decrypt_time)
+	if errMsg != "" {
 		seat_number = decrypt_text[:5]
 		log.Println("the seat_number is: ", seat_number)
+		err = err.NewError(401, errMsg)
 	}
-	return seat_number, error
+	return seat_number, err
 }
