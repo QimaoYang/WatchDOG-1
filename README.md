@@ -48,11 +48,11 @@ status code: 200
 response body(JSON):
 {
     "data": {
-        "seats":[
-            {"A1" : "availble"},
-            {"A2": "Zhang3"},
+        "seats":{
+             "A1" : "availble",
+             "A2": "Zhang3",
             ...
-        ]
+        }
     }
 }
 ```
