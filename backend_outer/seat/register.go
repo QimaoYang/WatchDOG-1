@@ -27,7 +27,18 @@ func SeatRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	seatCode := management.DecryptCode(p.Encryted)
+	seatCode, expired := management.DecryptCode(p.Encryted)
+	if expired == true {
+		errMsg := "QR code has expired"
+		resError := common.Errors{}
+		resError = resError.NewError(402, errMsg)
+		errCode, errMsg := resError.GetError()
+
+		log.Printf("[WD] ", errMsg)
+		http.Error(w, errMsg, errCode)
+		return
+	}
+
 	// res := map[string]string{"seat_number": seatCode}
 	// json.NewEncoder(w).Encode(res)
 	log.Println("[WD] Raw seat code is", seatCode)

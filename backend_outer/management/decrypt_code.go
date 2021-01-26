@@ -11,8 +11,6 @@ import (
 	"os"
 	"strconv"
 	"time"
-
-	"github.com/ChrisLi03/WatchDOG/backend_outer/common"
 )
 
 func unpadding(src []byte) []byte {
@@ -64,8 +62,9 @@ func checkQRcode(decrypt_time string) string {
 	return errMsg
 }
 
-func (err *common.Errors) DecryptCode(encryp_text string) (string, common.Errors) {
+func DecryptCode(encryp_text string) (string, bool) {
 	var seat_number string
+	expired := false
 	key := getKey()
 
 	decodedStr, _ := hex.DecodeString(encryp_text)
@@ -76,9 +75,9 @@ func (err *common.Errors) DecryptCode(encryp_text string) (string, common.Errors
 	decrypt_time := decrypt_text[5:]
 	errMsg := checkQRcode(decrypt_time)
 	if errMsg != "" {
-		seat_number = decrypt_text[:5]
-		log.Println("the seat_number is: ", seat_number)
-		err = err.NewError(401, errMsg)
+		expired = true
 	}
-	return seat_number, err
+	seat_number = decrypt_text[:5]
+	log.Println("the seat_number is: ", seat_number)
+	return seat_number, expired
 }
