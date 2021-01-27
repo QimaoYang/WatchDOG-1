@@ -81,7 +81,7 @@ func DecryptCode(encryp_text string) (string, string) {
 	seat_number = decrypt_text[:5]
 	log.Println("the seat_number is: ", seat_number)
 	seatNum, _ := strconv.Atoi(seat_number)
-	if seatNum <= 02005 || seatNum >= 02232 {
+	if seatNum < 2005 || seatNum > 2232 {
 		errType = "invalid"
 	}
 
