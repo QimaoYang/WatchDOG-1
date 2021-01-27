@@ -27,11 +27,21 @@ func SeatRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	seatCode, expired := management.DecryptCode(p.Encryted)
-	if expired == true {
-		errMsg := "QR code has expired"
+	seatCode, errType := management.DecryptCode(p.Encryted)
+	if errType == "expired" {
+		errMsg := "The QR code has expired"
 		resError := common.Errors{}
 		resError = resError.NewError(402, errMsg)
+		errCode, errMsg := resError.GetError()
+
+		log.Printf("[WD] ", errMsg)
+		http.Error(w, errMsg, errCode)
+		return
+	}
+	if errType == "invalid" {
+		errMsg := "The QR code is invalid"
+		resError := common.Errors{}
+		resError = resError.NewError(403, errMsg)
 		errCode, errMsg := resError.GetError()
 
 		log.Printf("[WD] ", errMsg)
