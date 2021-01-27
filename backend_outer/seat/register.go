@@ -56,7 +56,7 @@ func SeatRegister(w http.ResponseWriter, r *http.Request) {
 }
 
 func registSeat(w http.ResponseWriter, r *http.Request, seatNumber string, sessionAuth string) {
-	urlUserRegister := "http://localhost:5001/powercubicle/v1/db/seat/register"
+	urlUserRegister := "http://222.186.160.104:5001/powercubicle/v1/db/seat/register"
 
 	seatNumber = strings.TrimPrefix(seatNumber, "WS02.")
 	log.Println("[WD] Start booking seat ", seatNumber)
