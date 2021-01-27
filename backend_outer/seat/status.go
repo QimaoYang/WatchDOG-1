@@ -32,7 +32,7 @@ func RetrieveAllSeatStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 func retrieveOverallStatus(w http.ResponseWriter, r *http.Request) {
-	urlSeats := "http://222.186.160.104:5001/powercubicle/v1/db/seat"
+	urlSeats := "http://localhost:5001/powercubicle/v1/db/seat"
 
 	cubeClient := http.Client{
 		Timeout: time.Second * 5, // Timeout after 2 seconds
@@ -74,7 +74,7 @@ func retrieveOverallStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 func retrieveRegionStatus(w http.ResponseWriter, r *http.Request, region string) {
-	urlSeats := "http://222.186.160.104:5001/powercubicle/v1/db/seat"
+	urlSeats := "http://localhost:5001/powercubicle/v1/db/seat"
 	urlRegionSeats := strings.Join([]string{urlSeats, "?region=", region}, "")
 	cubeClient := http.Client{
 		Timeout: time.Second * 5, // Timeout after 2 seconds
@@ -110,15 +110,36 @@ func retrieveRegionStatus(w http.ResponseWriter, r *http.Request, region string)
 		log.Fatal(jsonErr)
 	}
 
-	regionSeat := map[string]string{}
+	regionSeat := map[string]map[string]string{}
+	seatDetails := map[string]string{}
+	seatKeys := []string{}
+	var seatNum string
+
 	for _, reg := range seatInfo.Data.Seat {
-		for k, v := range reg {
-			regionSeat[k] = v
+		seatKeys = getKeys(reg)
+		for _, key := range seatKeys {
+			if key != "team" {
+				seatNum = key
+				break
+			}
 		}
+		seatDetails["team"] = reg["team"]
+		seatDetails["state"] = reg[seatNum]
+		regionSeat[seatNum] = seatDetails
 	}
 
 	// need further logic handler
 	log.Printf("[watch dog] The region %s seats info is %v", region, regionSeat)
 
 	json.NewEncoder(w).Encode(regionSeat)
+}
+
+func getKeys(m map[string]string) []string {
+	j := 0
+	keys := make([]string, len(m))
+	for k := range m {
+		keys[j] = k
+		j++
+	}
+	return keys
 }
