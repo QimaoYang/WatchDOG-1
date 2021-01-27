@@ -62,9 +62,9 @@ func checkQRcode(decrypt_time string) string {
 	return errMsg
 }
 
-func DecryptCode(encryp_text string) (string, bool) {
+func DecryptCode(encryp_text string) (string, string) {
 	var seat_number string
-	expired := false
+	var errType string
 	key := getKey()
 
 	decodedStr, _ := hex.DecodeString(encryp_text)
@@ -75,9 +75,15 @@ func DecryptCode(encryp_text string) (string, bool) {
 	decrypt_time := decrypt_text[5:]
 	errMsg := checkQRcode(decrypt_time)
 	if errMsg != "" {
-		expired = true
+		errType = "expired"
 	}
+
 	seat_number = decrypt_text[:5]
 	log.Println("the seat_number is: ", seat_number)
-	return seat_number, expired
+	seatNum, _ := strconv.Atoi(seat_number)
+	if seatNum <= 02005 || seatNum >= 02232 {
+		errType = "invalid"
+	}
+
+	return seat_number, errType
 }
