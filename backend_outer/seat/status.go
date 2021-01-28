@@ -111,7 +111,6 @@ func retrieveRegionStatus(w http.ResponseWriter, r *http.Request, region string)
 	}
 
 	regionSeat := map[string]map[string]string{}
-	seatDetails := map[string]string{}
 	seatKeys := []string{}
 	var seatNum string
 
@@ -123,6 +122,8 @@ func retrieveRegionStatus(w http.ResponseWriter, r *http.Request, region string)
 				break
 			}
 		}
+
+		seatDetails := map[string]string{}
 		seatDetails["team"] = reg["team"]
 		seatDetails["state"] = reg[seatNum]
 		regionSeat[seatNum] = seatDetails
