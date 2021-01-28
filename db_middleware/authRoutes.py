@@ -133,6 +133,30 @@ class changePassword(Resource):
             return {"message": "bad payload"}, 400
         return 200
 
+reset_form = api.model('password_form', reset_form)
+
+class resetPassword(Resource):
+    @api.expect(reset_form)
+    @jwt_required
+    @api.param("Authorization", _in='header')
+    @api.doc(description="reset password")
+    def post(self):
+        try:
+            current_user = User.query.filter_by(username=get_jwt_identity()).first()
+            request_body = request.data.decode()
+            request_body = json.loads(request_body)
+            username = request_body['username']
+            if current_user.username not in ["1259540"]:
+                return 400
+            # get user info by token
+            user = User.query.filter_by(username=username).first()
+            #reset password
+            user.password = "password"
+            db.session.commit()
+        except:
+            return {"message": "bad payload"}, 400
+        return 200
+
 class refresh(Resource):
     @api.param("Authorization", _in='header')
     @jwt_refresh_token_required
@@ -151,4 +175,6 @@ api.add_resource(Reg, '/v1/db/user/register')
 api.add_resource(Login, '/v1/db/user/login')
 #api.add_resource(LogOut, '/logout')
 api.add_resource(changePassword, '/v1/db/user/password')
+api.add_resource(resetPassword, '/v1/db/user/reset')
+
 #api.add_resource(refresh, '/refresh')
