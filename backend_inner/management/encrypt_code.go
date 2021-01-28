@@ -72,11 +72,7 @@ func EncryptCode(w http.ResponseWriter, r *http.Request) {
 			encrypt_str = hex.EncodeToString(encrypt_text)
 			log.Println("the encrypt_text is: ", encrypt_str)
 		} else {
-			// resError := common.Errors{}
-			// errCode := 401
 			errMsg := "cannot get seat_number from frontend"
-			// resError = resError.NewError(errCode, errMsg)
-
 			log.Println(errMsg)
 			resp, _ := json.Marshal(map[string]string{
 				"errMsg": errMsg,
