@@ -3,7 +3,7 @@ This file all request form of this project
 '''
 from flask_restplus import fields
 login_form =  {'username': fields.String(default='string: username',example="1259540", required=True),
-        'password': fields.String(default='string: password',required=True)}
+        'password': fields.String(default='string: password',example="Passw0rd!" ,required=True)}
 reg_form = {#'name': fields.String(default='string: xx_yy', required=True),
         'password': fields.String(default='string: sss',required=True),
         'username': fields.String(default='string: xx_yy@dell.com', example='1259540',required=True),

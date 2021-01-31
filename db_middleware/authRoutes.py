@@ -13,10 +13,16 @@ from datetime import timedelta
 from models import *
 from flask_jwt_extended import create_access_token, create_refresh_token, get_jti, get_jwt_identity, jwt_required, get_raw_jwt,jwt_refresh_token_required
 from app import blacklist
+import csv
 # set ACCESS TOKEN EXPIRES TIME
 ACCESS_EXPIRES = timedelta(days=30)
 REFRESH_EXPIRES = timedelta(days=30)
 NT_LIST = []
+with open('ntList.csv') as csv_file2:
+    csv_reader2 = csv.reader(csv_file2, delimiter=',')
+    for row in csv_reader2:
+        NT_LIST.append(row[1])
+
 # init api namespace
 api = Namespace('', description='Auth operations')
 resource_fields = api.model('login_form', login_form)
@@ -64,10 +70,9 @@ class Reg(Resource):
             request_body = request.data.decode()
             print(json.loads(request_body))
             username = json.loads(request_body)["username"]
-            nt_id = int(username)
-            if nt_id not in NT_LIST or len(username) != 7:
-                print("username format is not correct")
-                pass
+
+            if username not in NT_LIST:
+                return {"message": "username not in nt_list"}, 400
             password = json.loads(request_body)["password"]
             if len(password) < 6:
                 return {"message": "password too short"}, 400
