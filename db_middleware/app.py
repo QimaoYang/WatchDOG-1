@@ -45,7 +45,7 @@ CORS(app)
 
 #blind namespace to swagger api page
 if __name__ == '__main__':
-    app.debug = True
+    app.debug = False
 
     from authRoutes import api as ns1
     from reservationRoutes import api as ns2
@@ -56,3 +56,5 @@ if __name__ == '__main__':
 
     #run backend server at port 5001
     app.run(host="0.0.0.0",port=5001)
+    from waitress import serve
+    #serve(app, host="0.0.0.0", port=5001)
