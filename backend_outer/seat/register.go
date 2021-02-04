@@ -51,8 +51,10 @@ func SeatRegister(w http.ResponseWriter, r *http.Request) {
 
 	// res := map[string]string{"seat_number": seatCode}
 	// json.NewEncoder(w).Encode(res)
-	log.Println("[WD] Raw seat code is", seatCode)
-	registSeat(w, r, seatCode, seatSessionKey)
+	if errType == "" {
+		log.Println("[WD] Raw seat code is", seatCode)
+		registSeat(w, r, seatCode, seatSessionKey)
+	}
 }
 
 func registSeat(w http.ResponseWriter, r *http.Request, seatNumber string, sessionAuth string) {
