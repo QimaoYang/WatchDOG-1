@@ -51,7 +51,7 @@ func EncryptCode(w http.ResponseWriter, r *http.Request) {
 	var msg string
 	ipFilter, ipAddr := IpFilter(r)
 
-	if !ipFilter {
+	if ipFilter {
 		msg = "true"
 
 		key := getKey()
