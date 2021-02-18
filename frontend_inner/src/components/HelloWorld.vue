@@ -21,7 +21,7 @@ export default {
       result: '未生成有效二维码',
       response_body: '',
       ip_valid: 'false',
-      qr_value: 'test',
+      qr_value: '',
       code_show: 0,
       encrypt_data: 'testme',
       seat_num: '',
