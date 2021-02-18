@@ -60,7 +60,7 @@ export default {
         } else {
           this.result = '未生成有效二维码'
           this.code_show = 0
-          this.qr_value = 'test'
+          this.qr_value = ''
           alert('Please input 10 valid characters! [WS02.02005 ~ WS02.02232]')
         }
       }
@@ -70,7 +70,7 @@ export default {
         this.site_num = 'WS02.'
         this.result = '未生成有效二维码'
         this.code_show = 0
-        this.qr_value = 'test'
+        this.qr_value = ''
       }
     }
   },
