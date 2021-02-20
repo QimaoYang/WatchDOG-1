@@ -49,5 +49,5 @@ func BlockAddr(ip net.IP) bool {
 		return false
 	}
 
-	return ip4[0] == 10 && ip4[1] == 84
+	return ip4[0] == 10 && (ip4[1] == 84 || ip4[1] == 135)
 }
