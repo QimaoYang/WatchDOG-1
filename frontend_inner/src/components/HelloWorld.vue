@@ -3,6 +3,7 @@
     <h1>欢迎宝宝们进行选座 ^.^</h1>
     <p style = "font-size:20px;">请输入您最心仪的座位号:</p>
     <input type = "text" v-model = "site_num">
+    <Vcode :show="isShow" @success="success" @close="close" />
     <button v-on:click="greet" style = "font-size:13px;">生成心动的二维码</button>
     <button v-on:click="clean" style = "font-size:13px;">清空</button>
     <p style = "font-size:18px;">{{result}}</p>
@@ -12,6 +13,7 @@
 
 <script>
 import vueQr from 'vue-qr'
+import Vcode from 'vue-puzzle-vcode'
 import axios from 'axios'
 export default {
   name: 'HelloWorld',
@@ -25,13 +27,26 @@ export default {
       code_show: 0,
       encrypt_data: 'testme',
       seat_num: '',
+      isShow: false,
       imageUrl: require('../assets/vxrail.png')
     }
   },
   components: {
-    vueQr
+    vueQr,
+    Vcode
   },
   methods: {
+    submit () {
+      this.isShow = true
+    },
+    success (msg) {
+      this.isShow = false
+      this.code_show = 1
+      this.result = '已生成可扫描二维码'
+    },
+    close () {
+      this.isShow = false
+    },
     greet: function (event) {
       if (event) {
         if (this.site_num.length === 10 && this.site_num < 'WS02.02233' && this.site_num > 'WS02.02004') {
@@ -80,9 +95,8 @@ export default {
       this.ip_valid = this.encrypt_data.msg
       if (this.ip_valid.indexOf('true') !== -1) {
         this.qr_value = 'http://dellemc.evenhidata.com:8080/?encryptCode=' + this.response_body
-        this.result = '已生成可扫描二维码'
+        this.isShow = true
         console.log(this.qr_value)
-        this.code_show = 1
       } else {
         this.result = '未生成有效二维码'
         this.code_show = 0
