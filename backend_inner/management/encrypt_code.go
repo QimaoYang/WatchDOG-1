@@ -49,19 +49,18 @@ func EncryptCode(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	var encrypt_str string
 	var msg string
-	ipFilter, ipAddr := IpFilter(r)
 
+	// get seat_number
+	body := json.NewDecoder(r.Body)
+	var params map[string]string
+	body.Decode(&params)
+	seat_number := params["seat_number"]
+	log.Println("get seat_number from frontend: ", seat_number)
+
+	ipFilter, ipAddr := IpFilter(r)
 	if ipFilter {
 		msg = "true"
-
 		key := getKey()
-
-		// get seat_number
-		body := json.NewDecoder(r.Body)
-		var params map[string]string
-		body.Decode(&params)
-		seat_number := params["seat_number"]
-		log.Println("get seat_number from frontend: ", seat_number)
 
 		if seat_number != "" {
 			currentTime := time.Now().Format("2006-01-02 15:04:05")
