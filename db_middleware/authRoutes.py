@@ -14,9 +14,7 @@ from models import *
 from flask_jwt_extended import create_access_token, create_refresh_token, get_jti, get_jwt_identity, jwt_required, get_raw_jwt,jwt_refresh_token_required
 from app import blacklist
 import csv
-# set ACCESS TOKEN EXPIRES TIME
-ACCESS_EXPIRES = timedelta(days=30)
-REFRESH_EXPIRES = timedelta(days=30)
+
 NT_LIST = []
 with open('ntList.csv') as csv_file2:
     csv_reader2 = csv.reader(csv_file2, delimiter=',')
@@ -48,8 +46,7 @@ class Login(Resource):
         elif user and not user.check_password(password):
             return {"message": "wrong password"}, 400
         # gen token
-        access_token = create_access_token(identity=json.loads(request_body)["username"], expires_delta=timedelta(days=30))
-        refresh_token = create_refresh_token(identity=json.loads(request_body)["username"])
+        access_token = create_access_token(identity=json.loads(request_body)["username"])
 
 
         # return tokens
@@ -89,7 +86,7 @@ class Reg(Resource):
         new_user.password = password
 
         # gen token
-        access_token = create_access_token(identity=json.loads(request_body)["username"], expires_delta=timedelta(days=30))
+        access_token = create_access_token(identity=json.loads(request_body)["username"])
 
         try:
             # commit new user to database
@@ -145,18 +142,18 @@ class resetPassword(Resource):
     @jwt_required
     @api.param("Authorization", _in='header')
     @api.doc(description="reset password")
-    def post(self):
+    def delete(self):
         try:
             current_user = User.query.filter_by(username=get_jwt_identity()).first()
             request_body = request.data.decode()
             request_body = json.loads(request_body)
             username = request_body['username']
-            if current_user.username not in ["1259540"]:
+            if current_user.username not in ["1259540", "1251337"]:
                 return 400
             # get user info by token
             user = User.query.filter_by(username=username).first()
-            #reset password
-            user.password = "password"
+            #delete user
+            db.session.delete(user)
             db.session.commit()
         except:
             return {"message": "bad payload"}, 400

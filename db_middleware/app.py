@@ -49,10 +49,12 @@ if __name__ == '__main__':
 
     from authRoutes import api as ns1
     from reservationRoutes import api as ns2
+    from reportGenerator import api as ns3
 
     #bind apis
     api.add_namespace(ns1)
     api.add_namespace(ns2)
+    api.add_namespace(ns3)
 
     #run backend server at port 5001
     app.run(host="0.0.0.0",port=5001)
