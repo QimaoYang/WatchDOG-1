@@ -51,7 +51,7 @@ class Reservation(db.Model):
     __tablename__ = 'seat_reservations'
     id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     seat_id = db.Column(db.Integer, ForeignKey('seats.id'))
-    user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    user_id = db.Column(db.Integer)
     date = db.Column(db.Date, default=date.today())
     start_time = db.Column(db.DateTime, default=datetime.now())
     end_time = db.Column(db.DateTime, default=datetime.now()+timedelta(hours=9))
