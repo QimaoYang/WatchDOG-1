@@ -4,9 +4,10 @@ import router from './router'
 import 'amfe-flexible'
 import './assets/stylus/reset.styl'
 import { post, get, patch, put } from './http'
-import { getSeatSitu, getSeatNum, usrLogin, usrRegis, getCurrentSeat, seatRelease, seatRegis } from './sqlserver'
+import { getSeatSitu, getSeatNum, usrLogin, usrRegis, getCurrentSeat, seatRelease, seatRegis, usrPwdChange } from './sqlserver'
 import Vconsole from 'vconsole'
 import Mint from 'mint-ui'
+import 'mint-ui/lib/style.css'
 var VueTouch = require('vue-touch')
 Vue.config.productionTip = false
 if (process.env.NODE_ENV === 'development') {
@@ -27,6 +28,7 @@ Vue.prototype.$seatRelease = seatRelease
 Vue.prototype.$seatRegis = seatRegis
 Vue.prototype.$usrLogin = usrLogin
 Vue.prototype.$usrRegis = usrRegis
+Vue.prototype.$usrPwdChange = usrPwdChange
 Vue.prototype.$isLogged = false
 Vue.prototype.$userName = ''
 Vue.prototype.$userSeat = ''

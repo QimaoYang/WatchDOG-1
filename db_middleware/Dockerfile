@@ -1,4 +1,4 @@
-FROM python:3.6-alpine as builder
+FROM python:3.7.3-alpine as builder
 
 COPY ./requirements.txt ./requirements.txt
 
