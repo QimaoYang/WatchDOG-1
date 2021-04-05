@@ -16,8 +16,8 @@
           <!--所有可以点击座位的数据会放入此插槽,此插槽可以缩放,拖动-->
         </slot>
       </v-touch>
-      <div :class="areaId">
-        <div v-if="areaId==='areaB'" class="screen-text">电梯间</div>
+      <div :class="areaName">
+        <div v-if="areaName==='areaB'" class="screen-text">电梯间</div>
         <div v-else class="screen-text">进门</div>
       </div>
     </div>
@@ -74,8 +74,10 @@ export default {
       touchStatus: false,
       // 座位左边栏的数组
       seatToolArr: this.propSeatToolArr,
-      areaId: 'area' + this.propAreaId
+      areaName: ''
     }
+  },
+  mounted () {
   },
   methods: {
     // 第一次点击座位改变放大比例
@@ -253,9 +255,10 @@ export default {
     },
     propSeatToolArr: function (value) {
       this.seatToolArr = value
+    },
+    propAreaId: function (value) {
+      this.areaName = 'area' + value
     }
-  },
-  mounted: function () {
   }
 }
 </script>
@@ -293,6 +296,7 @@ export default {
       z-index 2
       left 50%
       transform translateX(-50%);
+      margin-bottom:50px;
       .screen-text
         text-align center
         white-space nowrap;
@@ -310,6 +314,7 @@ export default {
       z-index 2
       left 50%
       transform translateX(-50%);
+      margin-bottom:50px;
       .screen-text
         text-align center
         white-space nowrap;

@@ -1,8 +1,5 @@
-module.exports = {
-  plugins: {
-    autoprefixer: {},
-    'postcss-px2rem': {
-      remUnit: 75
-    }
-  }
+module.exports = { 
+  plugins: { 
+    'autoprefixer': {browsers: 'last 5 version'} 
+  } 
 }

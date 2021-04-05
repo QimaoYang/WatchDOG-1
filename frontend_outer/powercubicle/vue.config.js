@@ -9,6 +9,9 @@ module.exports = {
     loaderOptions: {
       stylus: {
         javascriptEnabled: true
+      },
+      postcss: {
+        'autoprefixer': {browsers: 'last 5 version'}
       }
     }
   },

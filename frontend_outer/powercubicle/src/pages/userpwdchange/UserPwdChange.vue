@@ -1,30 +1,32 @@
 <template>
     <div>
-        <mt-header title="注册">
+        <mt-header title="更改密码">
             <router-link to="/" slot="left">
             <mt-button icon="back">返回</mt-button>
             </router-link>
         </mt-header>
         <br>
-        <mt-field label="工号" v-model="username" type="tel" placeholder="请输入工号" :attr="{ maxlength: 7 }"></mt-field>
+        <mt-field label="工号" v-model="username" :readonly=true :disableClear=true></mt-field>
         <br>
-        <mt-field label="密码" v-model="userpwd" type="password" placeholder="请输入密码" :attr="{ maxlength: 25 }"></mt-field>
+        <mt-field label="新密码" v-model="userpwd" type="password" placeholder="请输入新的密码" :attr="{ maxlength: 25 }"></mt-field>
         <br>
-        <mt-field label="确认密码" v-model="userpwdagain" type="password" placeholder="请再次输入密码" :attr="{ maxlength: 25 }"></mt-field>
+        <mt-field label="确认密码" v-model="userpwdagain" type="password" placeholder="请再次输入新的密码" :attr="{ maxlength: 25 }"></mt-field>
         <br>
-        <mt-button v-on:click="userRegis" type="primary" size="large">注册</mt-button>
+        <mt-button v-on:click="userPwdChange" type="primary" size="large">确认修改</mt-button>
     </div>
 </template>
 <script>
+import { getCookie } from '../../localstorage'
 const SUCCESS = 'SUCCESS'
 // const ERROR = 'ERROR'
-const NAMEDUP = 'NAMEDUP'
+// const NAMEDUP = 'NAMEDUP'
 // const NAMEERROR = 'NAMEERROR'
 // const PWDERROR = 'PWDERROR'
 // const RESERVED = 'RESERVED'
 // const FORMATERROR = 'FORMATERROR'
+const USERNAME = 'PCUserName'
 export default {
-  name: 'UserRegis',
+  name: 'UserPwdChange',
   data () {
     return {
       username: '',
@@ -33,9 +35,10 @@ export default {
     }
   },
   mounted () {
+    this.username = getCookie(USERNAME)
   },
   methods: {
-    userRegis: function () {
+    userPwdChange: function () {
       if (this.userpwd === this.userpwdagain) {
         var namereg = /^[0-9]{7}$/
         var pwdreg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}:";'<>?,./]).{6,16}$/
@@ -50,30 +53,33 @@ export default {
             duration: 800
           })
         } else {
-          this.$usrRegis(this.username, this.userpwd)
+          this.$usrPwdChange(this.userpwd)
             .then((response) => {
               if (response === SUCCESS) {
+                this.$toast({
+                  message: '密码修改成功！',
+                  duration: 800
+                })
                 this.$router.push({
                   path: '/'
                 })
-              } else if (response === NAMEDUP) {
-                alert('工号已存在')
-                this.username = ''
-                this.userpwd = ''
-                this.userpwdagain = ''
               } else {
-                alert('注册失败，请联系管理员')
-                this.username = ''
+                this.$toast({
+                  message: '密码修改失败！请重试',
+                  duration: 800
+                })
                 this.userpwd = ''
                 this.userpwdagain = ''
               }
             }, err => {
               if (err.response.status === 400) {
-                if (confirm('工号已存在，是否前去登录')) {
-                  this.$router.go(-1)
-                }
+                this.$toast({
+                  message: '密码修改失败！请重试',
+                  duration: 800
+                })
+                this.userpwd = ''
+                this.userpwdagain = ''
               }
-              console.log(err)
             })
         }
       } else {
